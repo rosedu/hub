@@ -1,0 +1,24 @@
+!!! 5
+html
+
+  head
+    title ROSEdu Events
+
+    link(rel='stylesheet', href='css/style.css')
+    link(rel='stylesheet', href='css/bootstrap.css')
+
+  body
+    h1 ROSEdu Events
+    #nav
+      ul#nav-ul
+        li
+          a(href='/') Home
+        li
+          - if (!email)
+            a(href='/auth/google') Login
+          - else
+            a(href='/logout') Logout
+
+    #main
+      block sidebar
+      block content

@@ -1,0 +1,28 @@
+body {
+	background: #E1E1E1 url('/images/bg.png') center 0 no-repeat;
+	font-family: 'Helvetica Neue', Helvetica, Arial;
+	font-size: 12px;
+	color: #4D4D4D;
+}
+
+#main {
+	width: 1000px;
+	margin: 0px auto 0px auto;
+}
+
+.card {
+	position: relative;
+	display: inline-block;
+	width: 600px;
+	height: 240px;
+	padding: 20px;
+	margin: 10px;
+	vertical-align: top;
+	background-color: #fff;
+	box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
+}
+
+.spacer {
+	clear: both;
+	height: 30px;
+}

@@ -1,0 +1,19 @@
+{
+	"modules": {
+		"qotd" : true
+	},
+	"themes": {
+		"red" : false,
+		"grey": true
+	},
+	"superuser": {
+		"admin": "marius"
+	},
+	"login": {
+		"enable":   true,
+		"facebook": false,
+		"twitter":  true,
+		"google":   true,
+		"github":   true
+	}
+}
