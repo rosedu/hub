@@ -53,9 +53,15 @@ app.get('/logout', function(req, res) {
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
   // if user is authenticated in the session, carry on
-  if (req.isAuthenticated())
-      return next();
+  if (req.isAuthenticated()) return next();
+  // if they aren't redirect them to the home page
+  res.redirect('/');
+}
 
+// route middleware to make sure a user is member
+function isMember(req, res, next) {
+  // if user is member, carry on
+  if (req.user.google.email.indexOf('@rosedu.org') > -1) return next();
   // if they aren't redirect them to the home page
   res.redirect('/');
 }
@@ -65,18 +71,22 @@ var Event = require('./config/models/events')
 
 // Base routes
 app.get('/', function (req, res) {
-
   Event.find().exec(gotEvents)
+
+  // Mark our members
+  if (req.user && req.user.google.email.indexOf('@rosedu.org') > -1)
+    req.user.google['isMember'] = true
 
   function gotEvents(err, events) {
     res.render('index', {
-      'email': (req.user ? req.user.google.email : null),
+      'user':   req.user ? req.user.google : null,
+      'email':  req.user ? req.user.google.email : null,
       'events': events
     })
   }
 })
 
-app.post('/add', function (req, res) {
+app.post('/add', isMember, function (req, res) {
   new Event({
     'name':        req.body.name,
     'date':        req.body.date,
@@ -89,6 +99,16 @@ app.post('/add', function (req, res) {
   })
 })
 
+app.get('/edit', isMember, function (req, res) {
+  Event.findOne({'_id': req.query.id}).exec(gotEvent)
+
+  function gotEvent(err, theEvent) {
+    res.render('edit', {
+      'event': theEvent,
+      'user': req.user.google
+    })
+  }
+})
 
 // 404 page
 app.use(function(req, res, next){

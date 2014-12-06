@@ -1,2 +1,2 @@
-events
+ROSEdu events
 ======

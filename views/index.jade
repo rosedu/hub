@@ -1,30 +1,28 @@
 extends layout
 
 block content
-  - if (email)
-    h3 New event
-    form(method='post', action='/add')
-      label Event name
-      input.span5(name='name', type='text', required)
-
-      label Date and time
-      input.span5(name='date', type='text', required)
-
-      label Location
-      input.span5(name='location', type='text', required)
-
-      label Contact email
-      input.span5(name='email', type='text', required)
-
-      label Description
-      textarea.span8(name='description', rows="4")
+  - if (user)
+    .user.card
+      b= user.name
       br
-      input.btn.btn-success(type='submit', value='Save')
+      = user.email
+      br
+      if (user && user.isMember)
+        a(href='/edit') Add event
+      br
+      a(href='/logout') Logout
 
-  h3 Events
   - each e in events
+    .date.card
+      #day 07
+      #month JAN
+    - if (user && user.isMember)
+      a(href='/edit?id=' + e._id)
+        .actions.raised
+          | EDIT
     .card
-      p= e.name
+      #name= e.name
+      #description= e.description
     .spacer
 
   .spacer

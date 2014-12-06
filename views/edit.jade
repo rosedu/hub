@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  .raised.form
+    h1= (event? 'Edit event':'Add event')
+    .spacer
+
+    form(method='post', action='/add')
+      label Event name
+      input.span5(name='name', type='text', required, value=(event? event.name:false))
+
+      label Date and time (DD-MM-YY HH:MM)
+      input.span5(name='date', type='text', required, value=(event? event.date:false))
+
+      label Location
+      input.span5(name='location', type='text', required, value=(event? event.location:false))
+
+      label Contact email
+      input.span5(name='email', type='text', required, value='#{user.email}')
+
+      label Description
+      textarea.span8(name='description', rows='10')= (event? event.description:'')
+      br
+      input.btn.btn-success(type='submit', value='Save')

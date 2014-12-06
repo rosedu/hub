@@ -8,11 +8,10 @@ html
     link(rel='stylesheet', href='css/bootstrap.css')
 
   body
-    h1 ROSEdu Events
     #nav
-      ul#nav-ul
+      ul
         li
-          a(href='/') Home
+          a(href='/') Events
         li
           - if (!email)
             a(href='/auth/google') Login
@@ -22,3 +21,8 @@ html
     #main
       block sidebar
       block content
+
+    .spacer
+    #footer
+      = "Copyright © 2007 - 2014 "
+      a(href="http://rosedu.org") ROSEdu
