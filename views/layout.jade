@@ -13,7 +13,7 @@ html
         li
           a(href='/') Events
         li
-          - if (!email)
+          - if (!user.email)
             a(href='/auth/google') Login
           - else
             a(href='/logout') Logout

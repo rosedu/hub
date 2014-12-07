@@ -60,10 +60,21 @@ function isLoggedIn(req, res, next) {
 
 // route middleware to make sure a user is member
 function isMember(req, res, next) {
+
+  if (!req.user) {
+    res.render('errors', {
+      'message': 'You are not logged in.',
+      'user':   req.user ? req.user.google : false
+    })
+  }
+
   // if user is member, carry on
   if (req.user.google.email.indexOf('@rosedu.org') > -1) return next();
   // if they aren't redirect them to the home page
-  res.redirect('/');
+  res.render('errors', {
+      'message': 'Sorry, you are not a Rosedu member :(',
+      'user':   req.user ? req.user.google : false
+    })
 }
 
 
@@ -79,8 +90,7 @@ app.get('/', function (req, res) {
 
   function gotEvents(err, events) {
     res.render('index', {
-      'user':   req.user ? req.user.google : null,
-      'email':  req.user ? req.user.google.email : null,
+      'user':   req.user ? req.user.google : false,
       'events': events
     })
   }
@@ -111,8 +121,11 @@ app.get('/edit', isMember, function (req, res) {
 })
 
 // 404 page
-app.use(function(req, res, next){
-  res.status(404).type('txt').send('Not found');
+app.use(function(req, res, next) {
+  res.status(404).render('errors', {
+    'message': '404 page not found',
+    'user':   req.user ? req.user.google : false
+  });
 });
 app.use(app.router);
 

@@ -7,7 +7,7 @@ block content
       br
       = user.email
       br
-      if (user && user.isMember)
+      if (user.isMember)
         a(href='/edit') Add event
       br
       a(href='/logout') Logout
