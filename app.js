@@ -25,7 +25,8 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(__dirname + '/public'));
+app.use('/public', express.static(__dirname + '/public'));
+app.use('/bower', express.static(__dirname + '/bower_components'));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -60,14 +61,28 @@ function isLoggedIn(req, res, next) {
 
 // route middleware to make sure a user is member
 function isMember(req, res, next) {
+
+  if (!req.user) {
+    res.render('errors', {
+      'message': 'You are not logged in',
+      'user':   false
+    });
+
+    return;
+  }
+
   // if user is member, carry on
   if (req.user.google.email.indexOf('@rosedu.org') > -1) return next();
   // if they aren't redirect them to the home page
-  res.redirect('/');
+  res.render('errors', {
+      'message': 'Sorry, you are not a Rosedu member :(',
+      'user':   req.user ? req.user.google : false
+    })
 }
 
 
 var Event = require('./config/models/events')
+var Macros = require('./config/models/macros')
 
 // Base routes
 app.get('/', function (req, res) {
@@ -78,9 +93,13 @@ app.get('/', function (req, res) {
     req.user.google['isMember'] = true
 
   function gotEvents(err, events) {
+
+    for (i = 0; i < events.length; i++) {
+      events[i].month = Macros.months[events[i].date.substring(0, 2)];
+    }
+
     res.render('index', {
-      'user':   req.user ? req.user.google : null,
-      'email':  req.user ? req.user.google.email : null,
+      'user':   req.user ? req.user.google : false,
       'events': events
     })
   }
@@ -91,7 +110,8 @@ app.post('/add', isMember, function (req, res) {
     'name':        req.body.name,
     'date':        req.body.date,
     'location':    req.body.location,
-    'email':       req.body.email,
+    'email':       req.body.email,    
+    'link':        req.body.link,
     'description': req.body.description
   }).save(function(err) {
     console.log("* Event added.")
@@ -111,8 +131,11 @@ app.get('/edit', isMember, function (req, res) {
 })
 
 // 404 page
-app.use(function(req, res, next){
-  res.status(404).type('txt').send('Not found');
+app.use(function(req, res, next) {
+  res.status(404).render('errors', {
+    'message': '404 page not found',
+    'user':   req.user ? req.user.google : false
+  });
 });
 app.use(app.router);
 

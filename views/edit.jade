@@ -6,19 +6,41 @@ block content
     .spacer
 
     form(method='post', action='/add')
-      label Event name
-      input.span5(name='name', type='text', required, value=(event? event.name:false))
 
-      label Date and time (DD-MM-YY HH:MM)
-      input.span5(name='date', type='text', required, value=(event? event.date:false))
+      .row
+        .form-group.col-lg-6
+          label Event name
+          input.form-control(name='name', type='text', required, value=(event? event.name:false))
 
-      label Location
-      input.span5(name='location', type='text', required, value=(event? event.location:false))
+      .row
+        .form-group.col-lg-6
+          label Date and time
+          input.form-control#datetimepicker(name='date', type='text', required, readonly='true', value=(event? event.date:false))
 
-      label Contact email
-      input.span5(name='email', type='text', required, value='#{user.email}')
+          script.
+            $('#datetimepicker').datetimepicker({
+              language: 'en'
+            });
 
-      label Description
-      textarea.span8(name='description', rows='10')= (event? event.description:'')
+      .row
+        .form-group.col-lg-6
+          label Location
+          input.form-control(name='location', type='text', required, value=(event? event.location:false))
+
+      .row
+        .form-group.col-lg-6
+          label Contact email
+          input.form-control(name='email', type='email', required, value='#{user.email}')
+
+      .row
+        .form-group.col-lg-6
+          label External event link
+          input.form-control(name='link', type='url', value=(event? event.link:false))
+
+      .row
+        .form-group.col-lg-6
+          label Description
+          textarea.form-control.textarea_width(name='description', rows='5')= (event? event.description:'')
+
       br
       input.btn.btn-success(type='submit', value='Save')

@@ -7,6 +7,7 @@ var eventSchema = mongoose.Schema({
     date         : String,
     location     : String,
     email        : String,
+    link         : String,
     description  : String,
     publisher    : String
 });

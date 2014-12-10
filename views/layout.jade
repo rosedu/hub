@@ -4,8 +4,14 @@ html
   head
     title ROSEdu Events
 
-    link(rel='stylesheet', href='css/style.css')
-    link(rel='stylesheet', href='css/bootstrap.css')
+    script(src='bower/jquery/dist/jquery.min.js')
+    script(src='bower/moment/min/moment.min.js')
+    script(src='bower/bootstrap/dist/js/bootstrap.min.js')
+    script(src='bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')
+
+    link(rel='stylesheet', href='public/css/style.css')
+    link(rel='stylesheet', href='bower/bootstrap/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')    
 
   body
     #nav
@@ -13,7 +19,7 @@ html
         li
           a(href='/') Events
         li
-          - if (!email)
+          - if (!user.email)
             a(href='/auth/google') Login
           - else
             a(href='/logout') Logout
