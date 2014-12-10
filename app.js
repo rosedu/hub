@@ -82,6 +82,7 @@ function isMember(req, res, next) {
 
 
 var Event = require('./config/models/events')
+var Macros = require('./config/models/macros')
 
 // Base routes
 app.get('/', function (req, res) {
@@ -92,6 +93,11 @@ app.get('/', function (req, res) {
     req.user.google['isMember'] = true
 
   function gotEvents(err, events) {
+
+    for (i = 0; i < events.length; i++) {
+      events[i].month = Macros.months[events[i].date.substring(0, 2)];
+    }
+
     res.render('index', {
       'user':   req.user ? req.user.google : false,
       'events': events
