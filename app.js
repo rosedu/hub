@@ -106,26 +106,33 @@ app.get('/', function (req, res) {
 })
 
 app.post('/add', isMember, function (req, res) {
-  new Event({
+  new_event = {
     'name':        req.body.name,
     'date':        req.body.date,
     'location':    req.body.location,
     'email':       req.body.email,    
     'link':        req.body.link,
     'description': req.body.description
-  }).save(function(err) {
-    console.log("* Event added.")
-    res.redirect('/')
-  })
+  }
+
+  if (req.query.id)
+    Event.update({'_id': req.query.id}, new_event).exec()
+  else
+    new Event(new_event).save()
+
+  res.redirect('/')
 })
 
 app.get('/edit', isMember, function (req, res) {
-  Event.findOne({'_id': req.query.id}).exec(gotEvent)
+
+  id = (req.query.id ? req.query.id : null)
+  Event.findOne({'_id': id}).exec(gotEvent)
 
   function gotEvent(err, theEvent) {
+
     res.render('edit', {
       'event': theEvent,
-      'user': req.user.google
+      'user':  req.user.google
     })
   }
 })

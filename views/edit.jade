@@ -5,7 +5,7 @@ block content
     h1= (event? 'Edit event':'Add event')
     .spacer
 
-    form(method='post', action='/add')
+    form(method='post', action=(event? '/add?id=' + event._id:'/add'))
 
       .row
         .form-group.col-lg-6
@@ -15,7 +15,7 @@ block content
       .row
         .form-group.col-lg-6
           label Date and time
-          input.form-control#datetimepicker(name='date', type='text', required, readonly='true', value=(event? event.date:false))
+          input.form-control#datetimepicker(name='date', type='text', required, value=(event? event.date:false))
 
           script.
             $('#datetimepicker').datetimepicker({
@@ -38,7 +38,7 @@ block content
           input.form-control(name='link', type='url', value=(event? event.link:false))
 
       .row
-        .form-group.col-lg-6
+        .form-group.col-lg-12
           label Description
           textarea.form-control.textarea_width(name='description', rows='5')= (event? event.description:'')
 
