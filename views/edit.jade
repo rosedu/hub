@@ -44,3 +44,7 @@ block content
 
       br
       input.btn.btn-success(type='submit', value='Save')
+
+      if (event)
+        a(href='/delete?id=' + event._id)
+          input.btn.btn-danger.delete_btn(value='Delete event')
