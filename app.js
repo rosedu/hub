@@ -116,7 +116,7 @@ app.post('/add', isMember, function (req, res) {
   }
 
   if (req.query.id)
-    Event.update({'_id': req.query.id}, new_event).exec()
+    Event.update({'_id': req.query.id}, new_event)
   else
     new Event(new_event).save()
 
@@ -125,8 +125,7 @@ app.post('/add', isMember, function (req, res) {
 
 app.get('/edit', isMember, function (req, res) {
 
-  id = (req.query.id ? req.query.id : null)
-  Event.findOne({'_id': id}).exec(gotEvent)
+  Event.findOne({'_id': req.query.id}).exec(gotEvent)
 
   function gotEvent(err, theEvent) {
 
@@ -135,6 +134,13 @@ app.get('/edit', isMember, function (req, res) {
       'user':  req.user.google
     })
   }
+})
+
+app.get('/delete', isMember, function (req, res) {
+
+  Event.remove({'_id': req.query.id})
+
+  res.redirect('/');  
 })
 
 // 404 page

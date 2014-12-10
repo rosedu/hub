@@ -124,3 +124,8 @@ body {
 .textarea_width {
 	max-width: 920px;
 }
+
+.delete_btn {
+	width: 110px;
+	float: right;
+}
