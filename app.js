@@ -25,7 +25,8 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(__dirname + '/public'));
+app.use('/public', express.static(__dirname + '/public'));
+app.use('/bower', express.static(__dirname + '/bower_components'));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -63,9 +64,11 @@ function isMember(req, res, next) {
 
   if (!req.user) {
     res.render('errors', {
-      'message': 'You are not logged in.',
-      'user':   req.user ? req.user.google : false
-    })
+      'message': 'You are not logged in',
+      'user':   false
+    });
+
+    return;
   }
 
   // if user is member, carry on
@@ -101,7 +104,8 @@ app.post('/add', isMember, function (req, res) {
     'name':        req.body.name,
     'date':        req.body.date,
     'location':    req.body.location,
-    'email':       req.body.email,
+    'email':       req.body.email,    
+    'link':        req.body.link,
     'description': req.body.description
   }).save(function(err) {
     console.log("* Event added.")
