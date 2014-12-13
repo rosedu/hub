@@ -6,13 +6,17 @@ body {
 	color: #4D4D4D;
 }
 
+iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
+  display: none;
+}
+
 #main {
 	width: 1000px;
 	margin: 0px auto 0px auto;
 	min-height: 500px;
 }
 
-#nav, #nav a {
+#header, header a {
 	width: 1000px;
 	margin: 0px auto 200px auto;
 	font-size: 18px;
@@ -20,9 +24,14 @@ body {
 	color: #323232;
 }
 
-#nav a:hover {
+#header a:hover {
 	color: #c84060;
 	text-decoration: none;
+}
+
+#nav {
+	width: 700px;
+	float: left;
 }
 
 #nav ul {
@@ -34,6 +43,13 @@ body {
 	display: inline;
 	list-style-type: none;
 	padding-right: 20px;
+}
+
+#controls {
+	width: 290px;
+	float: left;
+	padding: 10px 10px 0px 0px;
+	text-align: right;
 }
 
 #footer {

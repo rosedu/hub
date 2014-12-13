@@ -1,11 +1,11 @@
 // load all the things we need
-var GoogleStrategy   = require('passport-google').Strategy;
+var GoogleStrategy   = require('passport-google-plus')
 
 // load up the user model
 var User = require('./models/user')
 
 // load the auth variables
-var configAuth = require('./auth');
+var configAuth = require('./auth')
 
 module.exports = function(passport) {
 
@@ -21,71 +21,42 @@ module.exports = function(passport) {
     });
 
 
-    // GOOGLE
+    // GOOGLE LOGIN
     passport.use(new GoogleStrategy({
-        clientID        : configAuth.googleAuth.clientID,
-        clientSecret    : configAuth.googleAuth.clientSecret,
-        callbackURL     : configAuth.googleAuth.callbackURL,
-        returnURL       : configAuth.googleAuth.callbackURL,
-        passReqToCallback : true,
+        clientId        : configAuth.googleAuth.clientID,
+        clientSecret    : configAuth.googleAuth.clientSecret
     },
 
-    function(req, token, refreshToken, profile, done) {
+    function(tokens, profile, done) {
         process.nextTick(function() {
+            User.findOne({'google.id' : profile.id}, function(err, user) {
+                if (err) return done(err);
 
-            // Build user full name
-            fullname = req.query['openid.ext1.value.firstname'] + ' '
-            fullname += req.query['openid.ext1.value.lastname']
+                if (user) {
+                    user.google.token = tokens.access_token
+                    user.google.name  = profile.displayName
+                    user.google.email = profile.email
 
-            // check if the user is already logged in
-            if (!req.user) {
-                User.findOne({'google.id' : profile.id}, function(err, user) {
-                    if (err) return done(err);
+                    user.save(function(err) {
+                        if (err) throw err
+                        return done(null, user, tokens)
+                    });
 
-                    if (user) {
-                        if (!user.google.token) {
-                            // HACK: use query data
-                            user.google.token = req.query['openid.sig'];
-                            user.google.name  = fullname;
-                            user.google.email = req.query['openid.ext1.value.email']; // pull the first email
+                } else {
+                    var newUser          = new User();
 
-                            user.save(function(err) {
-                                if (err) throw err;
-                                return done(null, user);
-                            });
-                        }
+                    newUser.google.id    = profile.id
+                    newUser.google.token = tokens.access_token
+                    newUser.google.name  = profile.displayName
+                    newUser.google.email = profile.email
 
-                        return done(null, user);
-                    } else {
-                        var newUser          = new User();
+                    newUser.save(function(err) {
+                        if (err) throw err;
+                        return done(null, newUser, tokens);
+                    });
+                }
 
-                        newUser.google.id    = req.query['openid.sig'];
-                        newUser.google.token = req.query['openid.sig'];
-                        newUser.google.name  = fullname
-                        newUser.google.email = req.query['openid.ext1.value.email']; // pull the first email
-
-                        newUser.save(function(err) {
-                            if (err) throw err;
-                            return done(null, newUser);
-                        });
-                    }
-                });
-
-            } else {
-                // user already exists and is logged in, we have to link accounts
-                var user = req.user;
-
-                user.google.id = req.query['openid.sig'];
-                user.google.token = token;
-                user.google.name  = fullname;
-                user.google.email = req.query['openid.ext1.value.email'];
-
-                user.save(function(err) {
-                    if (err)
-                        throw err;
-                    return done(null, user);
-                });
-            }
+            })
         });
     }));
 

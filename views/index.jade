@@ -18,8 +18,7 @@ block content
       #month= e.month
     - if (user && user.isMember)
       a(href='/edit?id=' + e._id)
-        .actions.raised
-          | EDIT
+        .actions.raised EDIT
     .card
       #name= e.name
       #description= e.description

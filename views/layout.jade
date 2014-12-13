@@ -8,21 +8,26 @@ html
     script(src='bower/moment/min/moment.min.js')
     script(src='bower/bootstrap/dist/js/bootstrap.min.js')
     script(src='bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')
+    script(src="https://apis.google.com/js/client:platform.js", async, defer)
+    script(src="https://apis.google.com/js/client:plusone.js")
+
 
     link(rel='stylesheet', href='public/css/style.css')
     link(rel='stylesheet', href='bower/bootstrap/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')    
 
   body
-    #nav
-      ul
-        li
-          a(href='/') Events
-        li
-          - if (!user.email)
-            a(href='/auth/google') Login
-          - else
-            a(href='/logout') Logout
+    #header
+      #nav
+        ul
+          li
+            a(href='/') Events
+      #controls
+        - if (!user)
+          include ../public/google.html
+        - else
+          a(href='/logout') Logout
+      .spacer
 
     #main
       block sidebar
@@ -32,3 +37,7 @@ html
     #footer
       = "Copyright © 2007 - 2014 "
       a(href="http://rosedu.org") ROSEdu
+
+    script(src='../public/js/google-login.js')
+    script(src="//apis.google.com/js/client:plusone.js")
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js")

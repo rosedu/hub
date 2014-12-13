@@ -32,23 +32,41 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
 
-// GOOGLE LOGIN
-app.get('/auth/google',
-  passport.authenticate('google', {
-    scope : 'email'
-  }));
+app.post('/auth/google/callback', passport.authenticate('google'), function(req, res) {
+    // Init session vars
+    profile = req.user.google
+    isMember = (profile.email.indexOf('@rosedu.org') > -1) ? true:false
 
-app.get('/auth/google/callback',
-    passport.authenticate('google', {
-        successRedirect : '/',
-        failureRedirect : '/'
-    }));
+    req.session.user = {}
+    req.session.user.id = profile.id
+    req.session.user.name = profile.name
+    req.session.user.email = profile.email
+    req.session.user.token = profile.token
+    req.session.user.isMember = isMember
 
+    // Redirect to index page from ajax
+    res.send("/")
+});
 
-// route for logging out
 app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
+
+    // Revoke token
+    var https = require('https');
+    https.get({
+        host: 'accounts.google.com',
+        path: '/o/oauth2/revoke?token=' + req.session.user.token
+    }, function(response) {
+        // Continuously update stream with data
+        var body = '';
+        response.on('data', function(d) { body += d; });
+        response.on('end', function() {
+          // We do not expect any response
+          // Passport logout
+          req.session.destroy()
+
+          res.redirect('/')
+        });
+    });
 });
 
 // route middleware to make sure a user is logged in
@@ -72,7 +90,7 @@ function isMember(req, res, next) {
   }
 
   // if user is member, carry on
-  if (req.user.google.email.indexOf('@rosedu.org') > -1) return next();
+  if (req.session.user.isMember) return next();
   // if they aren't redirect them to the home page
   res.render('errors', {
       'message': 'Sorry, you are not a Rosedu member :(',
@@ -88,10 +106,6 @@ var Macros = require('./config/models/macros')
 app.get('/', function (req, res) {
   Event.find().exec(gotEvents)
 
-  // Mark our members
-  if (req.user && req.user.google.email.indexOf('@rosedu.org') > -1)
-    req.user.google['isMember'] = true
-
   function gotEvents(err, events) {
 
     for (i = 0; i < events.length; i++) {
@@ -99,7 +113,7 @@ app.get('/', function (req, res) {
     }
 
     res.render('index', {
-      'user':   req.user ? req.user.google : false,
+      'user':   req.session.user,
       'events': events
     })
   }
@@ -132,7 +146,7 @@ app.get('/edit', isMember, function (req, res) {
 
     res.render('edit', {
       'event': theEvent,
-      'user':  req.user.google
+      'user':  req.session.user
     })
   }
 })
