@@ -107,9 +107,12 @@ app.get('/', function (req, res) {
   Event.find().exec(gotEvents)
 
   function gotEvents(err, events) {
-
     for (i = 0; i < events.length; i++) {
       events[i].month = Macros.months[events[i].date.substring(0, 2)];
+
+      // Hide private events from nonmembers or non loggedin
+      if ((!req.session.user || !req.session.user.isMember) && events[i].membersOnly)
+        events.splice(i, 1)
     }
 
     res.render('index', {
@@ -120,13 +123,15 @@ app.get('/', function (req, res) {
 })
 
 app.post('/add', isMember, function (req, res) {
+  console.log(req.body.membersonly)
   new_event = {
     'name':        req.body.name,
     'date':        req.body.date,
     'location':    req.body.location,
     'email':       req.body.email,    
     'link':        req.body.link,
-    'description': req.body.description
+    'description': req.body.description,
+    'membersOnly': req.body.membersonly == 'on' ? true : false
   }
 
   if (req.query.id)

@@ -9,7 +9,8 @@ var eventSchema = mongoose.Schema({
     email        : String,
     link         : String,
     description  : String,
-    publisher    : String
+    publisher    : String,
+    membersOnly  : {type: Boolean, default: false}
 });
 
 // create the model for users and expose it to our app
