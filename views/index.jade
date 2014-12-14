@@ -23,7 +23,7 @@ block content
             | EDIT
       .card
         #name= e.name
-        #description= e.description
+        #description= Markdown.toHTML(e.description)
         .spacer
         #date
           span.glyphicon.glyphicon-time &emsp;
