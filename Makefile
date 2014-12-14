@@ -7,3 +7,6 @@ setup: package.json
 
 	sudo port install mongodb || sudo apt-get install mongodb
 	NODE_ENV=development
+
+deploy:
+	ssh events@projects.rosedu.org /home/events/deploy.sh
