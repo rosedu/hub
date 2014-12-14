@@ -101,6 +101,7 @@ function isMember(req, res, next) {
 
 var Event = require('./config/models/events')
 var Macros = require('./config/models/macros')
+var Markdown = require('markdown').markdown
 
 // Base routes
 app.get('/', function (req, res) {
@@ -110,6 +111,7 @@ app.get('/', function (req, res) {
     // Iterate in reverse order so we can remove items from list
     for (i = events.length-1; i >= 0; i--) {
       events[i].month = Macros.months[events[i].date.substring(0, 2)];
+      events[i].description = Markdown.toHTML(events[i].description);
 
       // Hide private events from nonmembers or non loggedin
       if ((!req.session.user || !req.session.user.isMember) && events[i].membersOnly)
@@ -128,7 +130,7 @@ app.post('/add', isMember, function (req, res) {
     'name':        req.body.name,
     'date':        req.body.date,
     'location':    req.body.location,
-    'email':       req.body.email,    
+    'email':       req.body.email,
     'link':        req.body.link,
     'description': req.body.description,
     'membersOnly': ((req.body.membersonly == 'on') ? true : false)
