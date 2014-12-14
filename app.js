@@ -108,6 +108,16 @@ app.get('/', function (req, res) {
   Event.find().exec(gotEvents)
 
   function gotEvents(err, events) {
+    // Sort events descending by date.
+    events.sort(function(eventOne, eventTwo) {
+      if (eventOne.date > eventTwo.date) {
+        return -1;
+      }
+      if (eventOne.date < eventTwo.date) {
+        return 1;
+      }
+      return 0;
+    });
     // Iterate in reverse order so we can remove items from list
     for (i = events.length-1; i >= 0; i--) {
       events[i].month = Macros.months[events[i].date.substring(0, 2)];
