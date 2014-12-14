@@ -101,7 +101,6 @@ function isMember(req, res, next) {
 
 var Event = require('./config/models/events')
 var Macros = require('./config/models/macros')
-var Markdown = require('markdown')
 
 // Base routes
 app.get('/', function (req, res) {
