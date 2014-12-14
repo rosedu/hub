@@ -12,30 +12,39 @@ block content
       br
       a(href='/logout') Logout
 
-  - each e in events
-    .date.card
-      #day #{e.date.substring(3, 5)}
-      #month= e.month
-    - if (user && user.isMember)
-      a(href='/edit?id=' + e._id)
-        .actions.raised EDIT
-    .card
-      #name= e.name
-      #description= e.description
+  - if (events)
+    - each e in events
+      .date.card
+        #day #{e.date.substring(3, 5)}
+        #month= e.month
+      - if (user && user.isMember)
+        a(href='/edit?id=' + e._id)
+          .actions.raised
+            | EDIT
+      .card
+        #name= e.name
+        #description= e.description
+        .spacer
+        #date
+          span.glyphicon.glyphicon-time &emsp;
+          span= e.date
+        #location
+          span.glyphicon.glyphicon-map-marker &emsp;
+          span= e.location
+        - if (e.link)
+          #link
+            span.glyphicon.glyphicon-link &emsp;
+            a(href= e.link) external link
+        #contact
+          span.glyphicon.glyphicon-user &emsp;
+          span= e.email
+
+        - if (e.membersOnly)
+          #privacy
+            span.glyphicon.glyphicon-eye-close &emsp;
+            span Only members can view this.
       .spacer
-      #date
-        span.glyphicon.glyphicon-time &emsp;
-        span= e.date
-      #location
-        span.glyphicon.glyphicon-map-marker &emsp;
-        span= e.location
-      - if (e.link)
-        #link
-          span.glyphicon.glyphicon-link &emsp;
-          a(href= e.link) external link
-      #contact
-        span.glyphicon.glyphicon-user &emsp;
-        span= e.email
-    .spacer
+    - else
+      h2 There are no events in this period
 
   .spacer

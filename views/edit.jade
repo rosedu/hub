@@ -44,8 +44,12 @@ block content
 
       .row
         .form-group.col-lg-12
-          input(type="checkbox", name="membersonly", checked=(event.membersOnly?'checked':undefined))
+          input(type="checkbox", name="membersonly", checked=((event && event.membersOnly)?'checked':undefined))
           = " Make event visible only to ROSEdu members"
 
       br
       input.btn.btn-success(type='submit', value='Save')
+
+      if (event)
+        a(href='/delete?id=' + event._id)
+          input.btn.btn-danger.delete_btn(value='Delete event')

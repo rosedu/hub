@@ -140,3 +140,8 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 .textarea_width {
 	max-width: 920px;
 }
+
+.delete_btn {
+	width: 110px;
+	float: right;
+}

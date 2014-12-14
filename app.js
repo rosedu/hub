@@ -107,7 +107,8 @@ app.get('/', function (req, res) {
   Event.find().exec(gotEvents)
 
   function gotEvents(err, events) {
-    for (i = 0; i < events.length; i++) {
+    // Iterate in reverse order so we can remove items from list
+    for (i = events.length-1; i >= 0; i--) {
       events[i].month = Macros.months[events[i].date.substring(0, 2)];
 
       // Hide private events from nonmembers or non loggedin
@@ -123,7 +124,6 @@ app.get('/', function (req, res) {
 })
 
 app.post('/add', isMember, function (req, res) {
-  console.log(req.body.membersonly)
   new_event = {
     'name':        req.body.name,
     'date':        req.body.date,
@@ -131,7 +131,7 @@ app.post('/add', isMember, function (req, res) {
     'email':       req.body.email,    
     'link':        req.body.link,
     'description': req.body.description,
-    'membersOnly': req.body.membersonly == 'on' ? true : false
+    'membersOnly': ((req.body.membersonly == 'on') ? true : false)
   }
 
   if (req.query.id)
@@ -144,8 +144,7 @@ app.post('/add', isMember, function (req, res) {
 
 app.get('/edit', isMember, function (req, res) {
 
-  id = (req.query.id ? req.query.id : null)
-  Event.findOne({'_id': id}).exec(gotEvent)
+  Event.findOne({'_id': req.query.id}).exec(gotEvent)
 
   function gotEvent(err, theEvent) {
 
@@ -154,6 +153,12 @@ app.get('/edit', isMember, function (req, res) {
       'user':  req.session.user
     })
   }
+})
+
+app.get('/delete', isMember, function (req, res) {
+  Event.remove({'_id': req.query.id}).exec(function(err, count){
+    res.redirect('/');
+  })
 })
 
 // 404 page
