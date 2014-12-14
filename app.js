@@ -98,6 +98,17 @@ function isMember(req, res, next) {
     })
 }
 
+require('string-format')
+
+function getFormattedDate(date) {
+  formatted = "{0}-{1}-{2} {3}:{4}".format(
+    date.getDate(),
+    date.getMonth(),
+    date.getFullYear(),
+    date.getHours(),
+    date.getMinutes());
+  return formatted;
+}
 
 var Event = require('./config/models/events')
 var Macros = require('./config/models/macros')
@@ -120,7 +131,8 @@ app.get('/', function (req, res) {
     });
     // Iterate in reverse order so we can remove items from list
     for (i = events.length-1; i >= 0; i--) {
-      events[i].month = Macros.months[events[i].date.substring(0, 2)];
+      events[i].month = Macros.months[events[i].date.getMonth()];
+      events[i].formattedDate = getFormattedDate(events[i].date)
       events[i].description = Markdown.toHTML(events[i].description);
 
       // Hide private events from nonmembers or non loggedin
@@ -136,9 +148,16 @@ app.get('/', function (req, res) {
 })
 
 app.post('/add', isMember, function (req, res) {
+  var eventDate = new Date(
+    req.body.date.year,
+    req.body.date.month,
+    req.body.date.day,
+    req.body.date.hour,
+    req.body.date.minute);
+
   new_event = {
     'name':        req.body.name,
-    'date':        req.body.date,
+    'date':        eventDate,
     'location':    req.body.location,
     'email':       req.body.email,
     'link':        req.body.link,
