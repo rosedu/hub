@@ -4,10 +4,12 @@ events and get notifications for new ones.
 
 ## Setup
 To setup you dev environment, just run:
+
         make setup
 
 ## Run
 TO run the app, first make sure your mongod process is running, and launch app:
+
         node app.js
 
 ## Contribute
