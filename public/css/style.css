@@ -64,7 +64,6 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 	position: relative;
 	display: inline-block;
 	width: 600px;
-	min-height: 300px;
 	padding: 20px;
 	margin: 10px;
 	vertical-align: top;
