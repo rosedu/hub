@@ -23,7 +23,8 @@ block content
             | EDIT
       .card
         #name= e.name
-        #description= e.description
+        #description
+          | !{e.description}
         .spacer
         #date
           span.glyphicon.glyphicon-time &emsp;
