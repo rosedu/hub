@@ -116,19 +116,9 @@ var Markdown = require('markdown').markdown
 
 // Base routes
 app.get('/', function (req, res) {
-  Event.find().exec(gotEvents)
+  Event.find().sort({'date': -1}).exec(gotEvents)
 
   function gotEvents(err, events) {
-    // Sort events descending by date.
-    events.sort(function(eventOne, eventTwo) {
-      if (eventOne.date > eventTwo.date) {
-        return -1;
-      }
-      if (eventOne.date < eventTwo.date) {
-        return 1;
-      }
-      return 0;
-    });
     // Iterate in reverse order so we can remove items from list
     for (i = events.length-1; i >= 0; i--) {
       events[i].month = Macros.months[events[i].date.getMonth()];
@@ -148,12 +138,8 @@ app.get('/', function (req, res) {
 })
 
 app.post('/add', isMember, function (req, res) {
-  var eventDate = new Date(
-    req.body.date.year,
-    req.body.date.month,
-    req.body.date.day,
-    req.body.date.hour,
-    req.body.date.minute);
+  var eventDate = new Date();
+  eventDate = req.body.date;
 
   new_event = {
     'name':        req.body.name,
@@ -178,6 +164,12 @@ app.get('/edit', isMember, function (req, res) {
   Event.findOne({'_id': req.query.id}).exec(gotEvent)
 
   function gotEvent(err, theEvent) {
+    theEvent.dateFormatted = "{0}/{1}/{2} {3}:{4}".format(
+      theEvent.date.getMonth(),
+      theEvent.date.getDate(),
+      theEvent.date.getFullYear(),
+      theEvent.date.hour,
+      theEvent.date.getMinutes());
 
     res.render('edit', {
       'event': theEvent,
