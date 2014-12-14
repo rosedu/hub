@@ -7,5 +7,3 @@ setup: package.json
 
 	sudo port install mongodb || sudo apt-get install mongodb
 	NODE_ENV=development
-
-	mongod &
