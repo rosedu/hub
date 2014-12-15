@@ -99,20 +99,19 @@ function isMember(req, res, next) {
 }
 
 require('string-format')
+var Event = require('./config/models/events')
+var Macros = require('./config/models/macros')
+var Markdown = require('markdown').markdown
 
 function getFormattedDate(date) {
-  formatted = "{0}-{1}-{2} {3}:{4}".format(
+  formatted = "{0} {1} {2} {3}:{4}".format(
     date.getDate(),
-    date.getMonth(),
+    Macros.months[date.getMonth()],
     date.getFullYear(),
     date.getHours(),
     date.getMinutes());
   return formatted;
 }
-
-var Event = require('./config/models/events')
-var Macros = require('./config/models/macros')
-var Markdown = require('markdown').markdown
 
 // Base routes
 app.get('/', function (req, res) {
@@ -159,12 +158,25 @@ app.post('/add', isMember, function (req, res) {
   res.redirect('/')
 })
 
+function getFormattedDateForEdit(date) {
+  formatted = "{0}/{1}/{2} {3}:{4}".format(
+    ("0" + (date.getMonth() + 1)).slice(-2),
+    date.getDate(),
+    date.getFullYear(),
+    date.getHours(),
+    date.getMinutes());
+  return formatted;
+}
+
 app.get('/edit', isMember, function (req, res) {
 
   Event.findOne({'_id': req.query.id}).exec(gotEvent)
 
   function gotEvent(err, theEvent) {
-    theEvent.dateFormatted = getFormattedDate(theEvent.date);
+    // If we are in edit mode, hence the event exists, format its date.
+    if (theEvent) {
+      theEvent.dateFormatted = getFormattedDateForEdit(theEvent.date);
+    };
 
     res.render('edit', {
       'event': theEvent,
