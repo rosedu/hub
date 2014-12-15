@@ -164,12 +164,7 @@ app.get('/edit', isMember, function (req, res) {
   Event.findOne({'_id': req.query.id}).exec(gotEvent)
 
   function gotEvent(err, theEvent) {
-    theEvent.dateFormatted = "{0}/{1}/{2} {3}:{4}".format(
-      theEvent.date.getMonth(),
-      theEvent.date.getDate(),
-      theEvent.date.getFullYear(),
-      theEvent.date.hour,
-      theEvent.date.getMinutes());
+    theEvent.dateFormatted = getFormattedDate(theEvent.date);
 
     res.render('edit', {
       'event': theEvent,
