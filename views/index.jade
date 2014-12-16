@@ -13,7 +13,11 @@ block content
       a(href='/logout') Logout
 
   - if (events)
-    - each e in events
+    - each e, i in events
+      - if (events[i-1] && events[i-1].upcoming && !events[i].upcoming)
+        h2 Passed Events
+        .spacer
+
       .date.card
         #day #{e.date.getDate()}
         #month= e.month

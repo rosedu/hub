@@ -124,6 +124,10 @@ app.get('/', function (req, res) {
       events[i].formattedDate = getFormattedDate(events[i].date)
       events[i].description = Markdown.toHTML(events[i].description);
 
+      // Mark upcoming events
+      if ((Date.now() - events[i].date) < 0)
+        events[i].upcoming = true
+
       // Hide private events from nonmembers or non loggedin
       if ((!req.session.user || !req.session.user.isMember) && events[i].membersOnly)
         events.splice(i, 1)
