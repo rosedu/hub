@@ -98,19 +98,30 @@ function isMember(req, res, next) {
     })
 }
 
-
+require('string-format')
 var Event = require('./config/models/events')
 var Macros = require('./config/models/macros')
 var Markdown = require('markdown').markdown
 
+function getFormattedDate(date) {
+  formatted = "{0} {1} {2} {3}:{4}".format(
+    date.getDate(),
+    Macros.months[date.getMonth()],
+    date.getFullYear(),
+    date.getHours(),
+    date.getMinutes());
+  return formatted;
+}
+
 // Base routes
 app.get('/', function (req, res) {
-  Event.find().exec(gotEvents)
+  Event.find().sort({'date': -1}).exec(gotEvents)
 
   function gotEvents(err, events) {
     // Iterate in reverse order so we can remove items from list
     for (i = events.length-1; i >= 0; i--) {
-      events[i].month = Macros.months[events[i].date.substring(0, 2)];
+      events[i].month = Macros.months[events[i].date.getMonth()];
+      events[i].formattedDate = getFormattedDate(events[i].date)
       events[i].description = Markdown.toHTML(events[i].description);
 
       // Hide private events from nonmembers or non loggedin
@@ -126,9 +137,12 @@ app.get('/', function (req, res) {
 })
 
 app.post('/add', isMember, function (req, res) {
+  var eventDate = new Date();
+  eventDate = req.body.date;
+
   new_event = {
     'name':        req.body.name,
-    'date':        req.body.date,
+    'date':        eventDate,
     'location':    req.body.location,
     'email':       req.body.email,
     'link':        req.body.link,
@@ -144,11 +158,25 @@ app.post('/add', isMember, function (req, res) {
   res.redirect('/')
 })
 
+function getFormattedDateForEdit(date) {
+  formatted = "{0}/{1}/{2} {3}:{4}".format(
+    ("0" + (date.getMonth() + 1)).slice(-2),
+    date.getDate(),
+    date.getFullYear(),
+    date.getHours(),
+    date.getMinutes());
+  return formatted;
+}
+
 app.get('/edit', isMember, function (req, res) {
 
   Event.findOne({'_id': req.query.id}).exec(gotEvent)
 
   function gotEvent(err, theEvent) {
+    // If we are in edit mode, hence the event exists, format its date.
+    if (theEvent) {
+      theEvent.dateFormatted = getFormattedDateForEdit(theEvent.date);
+    };
 
     res.render('edit', {
       'event': theEvent,

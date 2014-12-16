@@ -15,7 +15,7 @@ block content
       .row
         .form-group.col-lg-6
           label Date and time
-          input.form-control#datetimepicker(name='date', type='text', required, value=(event? event.date:false))
+          input.form-control#datetimepicker(name='date', type='text', required, value=(event? event.dateFormatted:false))
 
           script.
             $('#datetimepicker').datetimepicker({
