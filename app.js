@@ -104,12 +104,16 @@ var Macros = require('./config/models/macros')
 var Markdown = require('markdown').markdown
 
 function getFormattedDate(date) {
+  minutes = date.getMinutes();
+  if (date.getMinutes() == 0) {
+    minutes = "00";
+  };
   formatted = "{0} {1} {2} {3}:{4}".format(
     date.getDate(),
     Macros.months[date.getMonth()],
     date.getFullYear(),
     date.getHours(),
-    date.getMinutes());
+    minutes);
   return formatted;
 }
 
@@ -163,12 +167,16 @@ app.post('/add', isMember, function (req, res) {
 })
 
 function getFormattedDateForEdit(date) {
+  minutes = date.getMinutes();
+  if (date.getMinutes() == 0) {
+    minutes = "00";
+  };
   formatted = "{0}/{1}/{2} {3}:{4}".format(
     ("0" + (date.getMonth() + 1)).slice(-2),
     date.getDate(),
     date.getFullYear(),
     date.getHours(),
-    date.getMinutes());
+    minutes);
   return formatted;
 }
 
