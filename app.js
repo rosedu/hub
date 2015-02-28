@@ -31,6 +31,8 @@ app.use('/bower', express.static(__dirname + '/bower_components'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
+// This is some new comment right here
+
 
 app.post('/auth/google/callback', passport.authenticate('google'), function(req, res) {
     // Init session vars
