@@ -6,7 +6,10 @@ setup: package.json
 	sudo npm install -g nodemon
 	sudo npm install
 
-	sudo port install mongodb || sudo apt-get install mongodb
+	sudo port install mongodb || sudo apt-get install mongodb -y
+	sudo mkdir -p /data/db/
+	sudo chown `id -u` /data/db
+
 	NODE_ENV=development
 
 db-import:
