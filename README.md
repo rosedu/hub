@@ -7,6 +7,11 @@ To setup you dev environment, just run:
 
         make setup
 
+Then, to import the example database:
+
+		make db-import
+
+
 ## Run
 To run the app, first make sure your mongod process is running, and launch app:
 

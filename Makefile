@@ -8,5 +8,10 @@ setup: package.json
 	sudo port install mongodb || sudo apt-get install mongodb
 	NODE_ENV=development
 
+db-import:
+	mongod &
+	mongorestore --db events --colection events db_dump/events.bson
+	killall -15 mongod
+
 deploy:
 	ssh events@projects.rosedu.org /home/events/deploy.sh
