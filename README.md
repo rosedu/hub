@@ -15,7 +15,7 @@ Then, to import the example database:
 ## Run
 To run the app, first make sure your mongod process is running, and launch app:
 
-        node app.js
+        nodemon
 
 ## Deploy
 To deploy app in production, you need access privileges to projects.rosedu.org,

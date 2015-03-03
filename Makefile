@@ -3,6 +3,7 @@ setup: package.json
 	sudo apt-get update
 	sudo apt-get install nodejs -y
 	npm config set registry http://registry.npmjs.org/
+	sudo npm install -g nodemon
 	sudo npm install
 
 	sudo port install mongodb || sudo apt-get install mongodb
