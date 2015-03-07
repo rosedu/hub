@@ -12,9 +12,13 @@ setup: package.json
 
 	NODE_ENV=development
 
+run:
+	@mongod&
+	nodemon app.js
+
 db-import:
 	mongod &
-	mongorestore --db events --colection events db_dump/events.bson
+	mongorestore --db events --collection events db_dump/events/events.bson
 	killall -15 mongod
 
 deploy:
