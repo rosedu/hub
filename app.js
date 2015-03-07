@@ -159,7 +159,8 @@ app.post('/add', isMember, function (req, res) {
     'email':       req.body.email,
     'link':        req.body.link,
     'description': req.body.description,
-    'membersOnly': ((req.body.membersonly == 'on') ? true : false)
+    'membersOnly': ((req.body.membersonly == 'on') ? true : false),
+    'tags':        req.body.tags.split(" ")
   }
 
   if (req.query.id)
@@ -189,9 +190,12 @@ app.get('/edit', isMember, function (req, res) {
   Event.findOne({'_id': req.query.id}).exec(gotEvent)
 
   function gotEvent(err, theEvent) {
-    // If we are in edit mode, hence the event exists, format its date.
+    // If we are in edit mode, hence the event exists
     if (theEvent) {
-      theEvent.dateFormatted = getFormattedDateForEdit(theEvent.date);
+      // Format event date.
+      theEvent.dateFormatted = getFormattedDateForEdit(theEvent.date)
+      // Format tags list
+      theEvent.tags_formatted = theEvent.tags.toString().replace(/,/g, ' ')
     };
 
     res.render('edit', {

@@ -48,6 +48,13 @@ block content
           #privacy
             span.glyphicon.glyphicon-eye-close &emsp;
             span Only members can view this.
+
+        - if (e.tags && e.tags != '')
+          b= "TAGS: "
+          - each tag in e.tags
+            .tag= tag
+
+
       .spacer
     - else
       h2 There are no events in this period

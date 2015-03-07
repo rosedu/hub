@@ -144,3 +144,8 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 	width: 110px;
 	float: right;
 }
+
+.tag {
+	display: inline;
+	padding-right: 5px;
+}

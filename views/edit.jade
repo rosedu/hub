@@ -38,6 +38,11 @@ block content
           input.form-control(name='link', type='url', value=(event? event.link:false))
 
       .row
+        .form-group.col-lg-6
+          label Tags (space separated)
+          input.form-control(name='tags', type='text', value=(event? event.tags_formatted:false))
+
+      .row
         .form-group.col-lg-12
           label Description
           textarea.form-control.textarea_width(name='description', rows='5')= (event? event.description:'')
