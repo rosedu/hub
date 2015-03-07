@@ -78,7 +78,7 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 
 .date {
 	width: 40px;
-	height: 45px;
+	height: 60px;
 	float: left;
 	margin: 10px;
 	padding: 10px;
