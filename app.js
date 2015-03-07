@@ -32,10 +32,14 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
 
+// if NODE_ENV environment variable is set to 'development' then anyone can
+// access the full features of the site, so doesn't need to be a ROSEdu member
+var email_suffix = (process.env.NODE_ENV === 'development') ? '@gmail.com' : '@rosedu.org'
+
 app.post('/auth/google/callback', passport.authenticate('google'), function(req, res) {
     // Init session vars
     profile = req.user.google
-    isMember = (profile.email.indexOf('@rosedu.org') > -1) ? true:false
+    isMember = (profile.email.indexOf(email_suffix) > -1) ? true:false
 
     req.session.user = {}
     req.session.user.id = profile.id

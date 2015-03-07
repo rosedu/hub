@@ -3,10 +3,19 @@ setup: package.json
 	sudo apt-get update
 	sudo apt-get install nodejs -y
 	npm config set registry http://registry.npmjs.org/
+	sudo npm install -g nodemon
 	sudo npm install
 
-	sudo port install mongodb || sudo apt-get install mongodb
+	sudo port install mongodb || sudo apt-get install mongodb -y
+	sudo mkdir -p /data/db/
+	sudo chown `id -u` /data/db
+
 	NODE_ENV=development
+
+db-import:
+	mongod &
+	mongorestore --db events --colection events db_dump/events.bson
+	killall -15 mongod
 
 deploy:
 	ssh events@projects.rosedu.org /home/events/deploy.sh
