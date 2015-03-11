@@ -103,9 +103,6 @@ function isMember(req, res, next) {
 }
 
 require('string-format')
-var Event = require('./config/models/events')
-var Macros = require('./config/models/macros')
-
 
 // Base routes
 var events = require('./routes/events.js')
@@ -113,7 +110,6 @@ var events = require('./routes/events.js')
 app.get('/', events.index)
 app.get('/edit', isMember, events.edit)
 app.get('/delete', isMember, events.delete)
-
 app.post('/add', isMember, events.add)
 
 
