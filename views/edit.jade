@@ -2,7 +2,12 @@ extends layout
 
 block content
   .raised.form
+
     h1= (event? 'Edit event':'Add event')
+    h5= "If you need help reserving a room or promoting your event, check out "
+      = "the revelant wiki "
+      a(href='https://github.com/rosedu/meta/wiki/Evenimente') page
+      | .
     .spacer
 
     form(method='post', action=(event? '/add?id=' + event._id:'/add'))
