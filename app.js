@@ -1,12 +1,10 @@
-var fs           = require('fs');
-var express      = require('express');
-var bodyParser   = require('body-parser');
-var cookieParser = require('cookie-parser');
-var mongoose     = require('mongoose')
-var app = module.exports = express();
+var express      = require('express')
+var bodyParser   = require('body-parser')
+var app = module.exports = express()
 
 
 // Connect to database
+var mongoose = require('mongoose')
 var configDB = require('./config/database.js')
 mongoose.connect(configDB.url);
 
