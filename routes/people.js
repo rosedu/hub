@@ -16,11 +16,11 @@ exports.index = function(req, res) {
 }
 
 exports.user = function(req, res) {
-  User.find({'google.email': req.params.user + '@rosedu.org'}).exec(gotUser)
+  User.findOne({'google.email': req.params.user + '@rosedu.org'}).exec(gotUser)
 
-  function gotUser(err, user) {
+  function gotUser(err, member) {
     res.render('user', {
-    	'user': user
+    	'user': member
     })
   }
 }

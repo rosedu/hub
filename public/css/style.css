@@ -29,6 +29,20 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 	text-decoration: none;
 }
 
+.announcement {
+    width: 980px;
+    border: 1px solid #0f9d58;
+    padding: 20px;
+    margin: 0px auto 0px auto;
+    border-radius: 3px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 16px;
+    background-image: linear-gradient(#7fe7ab, #aaefc7);
+    background-repeat: repeat-x;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
 #nav {
 	width: 700px;
 	float: left;
@@ -233,4 +247,14 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
     50% { opacity:0; }
     75% { opacity:1; }
     100% { opacity:1; }
+}
+
+/********* USER **********/
+.user-avatar {
+	float: left;
+}
+
+.user-info {
+	float: left;
+	margin-left: 30px
 }

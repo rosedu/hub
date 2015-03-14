@@ -36,7 +36,7 @@ module.exports = function(passport) {
                     user.google.token = tokens.access_token
                     user.google.name  = profile.displayName
                     user.google.email = profile.email
-                    user.google.avatar = profile.image.url.split('?')
+                    user.google.avatar = profile.image.url.split('?')[0]
 
                     user.save(function(err) {
                         if (err) throw err
@@ -50,7 +50,7 @@ module.exports = function(passport) {
                     newUser.google.token = tokens.access_token
                     newUser.google.name  = profile.displayName
                     newUser.google.email = profile.email
-                    user.google.avatar = profile.image.url.split('?')
+                    user.google.avatar = profile.image.url.split('?')[0]
 
                     newUser.save(function(err) {
                         if (err) throw err;

@@ -53,23 +53,27 @@ app.post('/auth/google/callback', passport.authenticate('google'), function(req,
 app.get('/logout', function(req, res) {
 
     // Revoke token
-    var https = require('https');
-    https.get({
-        host: 'accounts.google.com',
-        path: '/o/oauth2/revoke?token=' + req.session.user.token
-    }, function(response) {
-        // Continuously update stream with data
-        var body = '';
-        response.on('data', function(d) { body += d; });
-        response.on('end', function() {
-          // We do not expect any response
-          // Passport logout
-          req.session.destroy()
+    if (req.session.user) {
+      var https = require('https');
+      https.get({
+          host: 'accounts.google.com',
+          path: '/o/oauth2/revoke?token=' + req.session.user.token
+      }, function(response) {
+          // Continuously update stream with data
+          var body = '';
+          response.on('data', function(d) { body += d; });
+          response.on('end', function() {
+            // We do not expect any response
+            // Passport logout
+            req.session.destroy()
 
-          res.redirect('/')
-        });
-    });
-});
+            res.redirect('/')
+          })
+      })
+    } else {
+      res.redirect('/')
+    }
+})
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
