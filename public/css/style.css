@@ -149,3 +149,88 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 	display: inline;
 	padding-right: 5px;
 }
+
+/******* PEOPLE ********/
+.person {
+    float: left;
+    width: 80px;
+    height: 80px;
+}
+
+.name-container {
+    position:relative;
+}
+
+.name {
+    position: absolute;
+    left: -19px;
+    opacity: 0;
+    background: #fff;
+    width: 114px;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 0 0 5px 5px;
+    padding-bottom: 3px;
+    box-shadow:0 0 5px #888, 0 0 1px #888;
+}
+
+.name:hover {
+    display: none;
+}
+
+.avatar-container img {
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+    width: -webkit-calc(100% - 4px);
+    width: 76px;
+    height: 78px;
+    background-color: #0f9d58;
+}
+
+.person:not(.search-hidden) img:hover {
+    -webkit-transform:scale(1.5);
+    -moz-transform:scale(1.5);
+    -o-transform:scale(1.5);
+    -ms-transform:scale(1.5);
+    transform:scale(1.5);
+    border:0px solid #fff;
+    box-shadow:0 0 5px #888, 0 0 1px #888;
+}
+
+.person:not(.search-hidden):hover .name {
+    -webkit-animation: showName .3s;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation: showName .3s;
+    -moz-animation-fill-mode: forwards;
+    -ms-animation: showName .3s;
+    -ms-animation-fill-mode: forwards;
+    animation: showName .3s;
+    animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes showName {
+    50% { opacity:0; }
+    75% { opacity:1; }
+    100% { opacity:1; }
+}
+
+@-moz-keyframes showName {
+    50% { opacity:0; }
+    75% { opacity:1; }
+    100% { opacity:1; }
+}
+
+@-ms-keyframes showName {
+    50% { opacity:0; }
+    75% { opacity:1; }
+    100% { opacity:1; }
+}
+
+@keyframes showName {
+    50% { opacity:0; }
+    75% { opacity:1; }
+    100% { opacity:1; }
+}

@@ -104,11 +104,14 @@ require('string-format')
 
 // Base routes
 var events = require('./routes/events.js')
-
 app.get('/', events.index)
 app.get('/edit', isMember, events.edit)
 app.get('/delete', isMember, events.delete)
 app.post('/add', isMember, events.add)
+
+var people = require('./routes/people.js')
+app.get('/people', people.index)
+app.get('/people/:user', people.user)
 
 
 // 404 page

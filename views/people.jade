@@ -1,0 +1,17 @@
+extends layout
+
+block content
+	.people-pannel
+		- each p in people
+			.person(data-name=p.google.name)
+				a(href='/people/' + p.google.username)
+					.avatar-container
+						img(src=p.google.avatar)
+					.name-container
+						h3.name
+							cufon.cufon.cufon-canvas
+								cufontext= p.google.name
+
+		.person
+			a(href='/people/join')
+				.avatar-container Join Us!
