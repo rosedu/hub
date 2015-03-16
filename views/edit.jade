@@ -57,6 +57,11 @@ block content
           input(type="checkbox", name="membersonly", checked=((event && event.membersOnly)?'checked':undefined))
           = " Make event visible only to ROSEdu members"
 
+      .row
+        .form-group.col-lg-12
+          input(type="checkbox", name="send_mail", checked=((event?undefined:'checked')))
+          = " Tell the community about your event"
+
       br
       input.btn.btn-success(type='submit', value='Save')
 

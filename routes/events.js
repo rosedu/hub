@@ -1,5 +1,6 @@
 var Event = require('../config/models/events')
 var Macros = require('../config/models/macros')
+var Utils = require('../utils')
 var Markdown = require('markdown').markdown
 
 
@@ -44,10 +45,14 @@ exports.add = function (req, res) {
     'tags':        req.body.tags.split(" ")
   }
 
-  if (req.query.id)
+  // Send announcement to community
+  if (req.body.send_mail) Utils.mail_community(new_event)
+
+  if (req.query.id) {
     Event.update({'_id': req.query.id}, new_event).exec()
-  else
+  } else {
     new Event(new_event).save()
+  }
 
   res.redirect('/')
 }
