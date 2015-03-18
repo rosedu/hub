@@ -24,7 +24,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/public', express.static(__dirname + '/public'));
-app.use('/bower', express.static(__dirname + '/bower_components'));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');

@@ -23,9 +23,7 @@ block content
           input.form-control#datetimepicker(name='date', type='text', required, value=(event? event.dateFormatted:false))
 
           script.
-            $('#datetimepicker').datetimepicker({
-              language: 'en'
-            });
+            $('#datetimepicker').datetimepicker()
 
       .row
         .form-group.col-lg-6
