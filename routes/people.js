@@ -1,7 +1,7 @@
 var User = require('../config/models/user')
 
 exports.index = function(req, res) {
-  User.find().exec(gotPeople)
+  User.find({'google.email': /@rosedu.org$/}).exec(gotPeople)
 
   function gotPeople(err, all) {
 
