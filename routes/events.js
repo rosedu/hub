@@ -82,7 +82,8 @@ exports.edit = function (req, res) {
     // If we are in edit mode, hence the event exists
     if (theEvent) {
       // Format event date.
-      theEvent.dateFormatted = getFormattedDateForEdit(theEvent.date)
+      theEvent.startDateFormatted = getFormattedDateForEdit(theEvent.start)
+      theEvent.endDateFormatted = getFormattedDateForEdit(theEvent.end)
       // Format tags list
       theEvent.tags_formatted = theEvent.tags.toString().replace(/,/g, ' ')
     };
