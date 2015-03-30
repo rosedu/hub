@@ -25,5 +25,6 @@ so you can run:
 
 ## Contribute
 To contribute, fork the project, solve issues, make Pull Requests.
+Please comply with [npm's "funny" coding style](https://docs.npmjs.com/misc/coding-style)
 
 ## Happy coding!
