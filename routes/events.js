@@ -50,8 +50,10 @@ exports.add = function (req, res) {
 
   if (req.query.id) {
     Event.update({'_id': req.query.id}, new_event).exec()
+    console.log('* Event ' + new_event.name + ' updated by ' + req.session.user.email)
   } else {
     new Event(new_event).save()
+    console.log('* Event ' + new_event.name + ' added by ' + req.session.user.email)
   }
 
   res.redirect('/')

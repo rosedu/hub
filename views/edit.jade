@@ -33,7 +33,7 @@ block content
       .row
         .form-group.col-lg-6
           label Contact email
-          input.form-control(name='email', type='email', required, value='#{user.email}')
+          input.form-control(name='email', type='email', required, value=(event? event.email:user.email))
 
       .row
         .form-group.col-lg-6
