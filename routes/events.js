@@ -6,7 +6,14 @@ var util = require('util')
 
 
 exports.index = function (req, res) {
-  Event.find().sort({'date': -1}).exec(gotEvents)
+  // Paginate events
+  // Ensure that only numbers are used as page numbers.
+  if (req.params.page <= 0 || isNaN(parseFloat(req.params.page))) return res.redirect('/events/1')
+
+  plimit = Macros.EVENTS_PER_PAGE
+  skip = (req.params.page - 1) * plimit
+
+  Event.find().sort({'date': -1}).skip(skip).limit(plimit).exec(gotEvents)
 
   function gotEvents(err, events) {
     // Iterate in reverse order so we can remove items from list
@@ -26,7 +33,8 @@ exports.index = function (req, res) {
 
     res.render('index', {
       'user':   req.session.user,
-      'events': events
+      'events': events,
+      'page':   req.params.page
     })
   }
 }

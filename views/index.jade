@@ -57,9 +57,14 @@ block content
           - each tag in e.tags
             .tag= tag
 
-
       .spacer
     - else
       h2 There are no events in this period
 
-  .spacer
+    - if (events.length != 0)
+      .events-older
+        - var next_page = page? parseInt(page)+1 : 2
+        a(href='/events/' + next_page) << Older events
+      .events-newer
+        - if (page > 1)
+          a(href='') Newer events >>

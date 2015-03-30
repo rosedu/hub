@@ -106,7 +106,12 @@ function isMember(req, res, next) {
 
 // Base routes
 var events = require('./routes/events.js')
-app.get('/', events.index)
+
+// Temporary redirect
+app.get('/', function(req, res) { res.redirect('/events') })
+
+app.get('/events', events.index)
+app.get('/events/:page', events.index)
 app.get('/edit', isMember, events.edit)
 app.get('/delete', isMember, events.delete)
 app.post('/add', isMember, events.add)

@@ -164,6 +164,13 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 	padding-right: 5px;
 }
 
+.events-older {
+	float: left;
+}
+
+.events-newer {
+	text-align: right;
+}
 /******* PEOPLE ********/
 .person {
     float: left;

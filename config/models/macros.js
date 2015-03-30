@@ -12,3 +12,5 @@ exports.months =
 		'10' : 'NOV',
 		'11' : 'DEC'
 	}
+
+exports.EVENTS_PER_PAGE = 10
