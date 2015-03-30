@@ -13,17 +13,23 @@ exports.index = function (req, res) {
   plimit = Macros.EVENTS_PER_PAGE
   skip = (req.params.page - 1) * plimit
 
-  Event.find().sort({'date': -1}).skip(skip).limit(plimit).exec(gotEvents)
+  Event.find().sort({'start': -1}).skip(skip).limit(plimit).exec(gotEvents)
 
   function gotEvents(err, events) {
     // Iterate in reverse order so we can remove items from list
     for (i = events.length-1; i >= 0; i--) {
-      events[i].month = Macros.months[events[i].date.getMonth()];
-      events[i].formattedDate = getFormattedDate(events[i].date)
-      events[i].description = Markdown.toHTML(events[i].description);
+      events[i].startMonth = Macros.months[events[i].start.getMonth()]
+      events[i].startDateFormatted = getFormattedDate(events[i].start)
+
+      if (events[i].end) {
+        events[i].endMonth = Macros.months[events[i].end.getMonth()]
+        events[i].endDateFormatted = getFormattedDate(events[i].end)
+      }
+
+      events[i].description = Markdown.toHTML(events[i].description)
 
       // Mark upcoming events
-      if ((Date.now() - events[i].date) < 0)
+      if ((Date.now() - events[i].start) < 0)
         events[i].upcoming = true
 
       // Hide private events from nonmembers or non loggedin
@@ -40,11 +46,13 @@ exports.index = function (req, res) {
 }
 
 exports.add = function (req, res) {
-  eventDate = new Date(req.body.date)
+  eventStartDate = new Date(req.body.start_date)
+  eventEndDate = new Date(req.body.end_date)
 
   new_event = {
     'name':        req.body.name,
-    'date':        eventDate,
+    'start':       eventStartDate,
+    'end':         eventEndDate,
     'location':    req.body.location,
     'email':       req.body.email,
     'link':        req.body.link,

@@ -22,20 +22,18 @@ block content
         .spacer
 
       .date.card
-        #day #{e.date.getDate()}
-        #month= e.month
+        #day= e.start.getDate()
+        #month= e.startMonth
       - if (user && user.isMember)
-        a(href='/events/edit?id=' + e._id)
-          .actions.raised
-            | EDIT
+        a.actions.raised(href='/events/edit?id=' + e._id) EDIT
+
       .card
         #name= e.name
-        #description
-          | !{e.description}
+        #description !{e.description}
         .spacer
         #date
           span.glyphicon.glyphicon-time &emsp;
-          span= e.formattedDate
+          span= e.startDateFormatted
         #location
           span.glyphicon.glyphicon-map-marker &emsp;
           span= e.location

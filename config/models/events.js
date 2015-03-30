@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 // define the schema for our user model
 var eventSchema = mongoose.Schema({
     name         : String,
-    date         : Date,
+    start        : Date,
+    end          : Date,
     location     : String,
     email        : String,
     link         : String,

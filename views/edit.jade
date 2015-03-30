@@ -10,54 +10,66 @@ block content
       | .
     .spacer
 
-    form(method='post', action=(event? '/events/add?id=' + event._id:'/add'))
+    form(method='post', action=(event? '/events/add?id='+event._id:'/events/add'))
 
       .row
         .form-group.col-lg-6
           label Event name
-          input.form-control(name='name', type='text', required, value=(event? event.name:false))
+          input.form-control(name='name', type='text', required,
+            value=(event? event.name:false))
 
       .row
         .form-group.col-lg-6
-          label Date and time
-          input.form-control#datetimepicker(name='date', type='text', required, value=(event? event.dateFormatted:false))
+          label Start time
+          input.form-control.datetimepicker(name='start_date', type='text',
+            required, value=(event? event.startDateFormatted:false))
+          label End time (optional)
+          input.form-control.datetimepicker(name='end_date', type='text',
+            value=(event? event.endDateFormatted:false))
 
           script.
-            $('#datetimepicker').datetimepicker()
+            $('.datetimepicker').datetimepicker()
 
       .row
         .form-group.col-lg-6
           label Location
-          input.form-control(name='location', type='text', required, value=(event? event.location:false))
+          input.form-control(name='location', type='text', required,
+            value=(event? event.location:false))
 
       .row
         .form-group.col-lg-6
           label Contact email
-          input.form-control(name='email', type='email', required, value=(event? event.email:user.email))
+          input.form-control(name='email', type='email', required,
+            value=(event? event.email:user.email))
 
       .row
         .form-group.col-lg-6
           label External event link
-          input.form-control(name='link', type='url', value=(event? event.link:false))
+          input.form-control(name='link', type='url',
+            value=(event? event.link:false))
 
       .row
         .form-group.col-lg-6
           label Tags (space separated)
-          input.form-control(name='tags', type='text', value=(event? event.tags_formatted:false))
+          input.form-control(name='tags', type='text',
+            value=(event? event.tags_formatted:false))
 
       .row
         .form-group.col-lg-12
           label Description
-          textarea.form-control.textarea_width(name='description', rows='5')= (event? event.description:'')
+          textarea.form-control.textarea_width(name='description',
+            rows='5')= (event? event.description:'')
 
       .row
         .form-group.col-lg-12
-          input(type='checkbox', name='membersonly', checked=((event && event.membersOnly)?'checked':undefined))
+          input(type='checkbox', name='membersonly',
+            checked=((event && event.membersOnly)?'checked':undefined))
           = ' Make event visible only to ROSEdu members'
 
       .row
         .form-group.col-lg-12
-          input(type='checkbox', name='send_mail', checked=((event?undefined:'checked')))
+          input(type='checkbox', name='send_mail',
+            checked=((event?undefined:'checked')))
           = ' Tell the community about your event'
 
       br
