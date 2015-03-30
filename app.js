@@ -46,7 +46,7 @@ app.post('/auth/google/callback', passport.authenticate('google'), function(req,
     req.session.user.isMember = isMember
 
     // Redirect to index page from ajax
-    res.send("/")
+    res.send('/')
 });
 
 app.get('/logout', function(req, res) {
@@ -111,10 +111,10 @@ var events = require('./routes/events.js')
 app.get('/', function(req, res) { res.redirect('/events') })
 
 app.get('/events', events.index)
+app.get('/events/edit', isMember, events.edit)
+app.get('/events/delete', isMember, events.delete)
+app.post('/events/add', isMember, events.add)
 app.get('/events/:page', events.index)
-app.get('/edit', isMember, events.edit)
-app.get('/delete', isMember, events.delete)
-app.post('/add', isMember, events.add)
 
 var people = require('./routes/people.js')
 app.get('/people', people.index)

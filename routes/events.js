@@ -31,7 +31,7 @@ exports.index = function (req, res) {
         events.splice(i, 1)
     }
 
-    res.render('index', {
+    res.render('events', {
       'user':   req.session.user,
       'events': events,
       'page':   req.params.page
@@ -50,7 +50,7 @@ exports.add = function (req, res) {
     'link':        req.body.link,
     'description': req.body.description,
     'membersOnly': ((req.body.membersonly == 'on') ? true : false),
-    'tags':        req.body.tags.split(" ")
+    'tags':        req.body.tags.split(' ')
   }
 
   // Send announcement to community
@@ -64,7 +64,7 @@ exports.add = function (req, res) {
     console.log('* Event ' + new_event.name + ' added by ' + req.session.user.email)
   }
 
-  res.redirect('/')
+  res.redirect('/events')
 }
 
 exports.edit = function (req, res) {
@@ -87,8 +87,8 @@ exports.edit = function (req, res) {
 }
 
 exports.delete = function (req, res) {
-  Event.remove({'_id': req.query.id}).exec(function(err, count){
-    res.redirect('/');
+  Event.remove({'_id': req.query.id}).exec(function(err, count) {
+    res.redirect('/events');
   })
 }
 
@@ -99,13 +99,13 @@ function getFormattedDate(date) {
     date.getDate(),
     Macros.months[date.getMonth()],
     date.getFullYear(),
-    ("0" + date.getHours()).slice(-2),
-    ("0" + date.getMinutes()).slice(-2))
+    ('0' + date.getHours()).slice(-2),
+    ('0' + date.getMinutes()).slice(-2))
 }
 
 function getFormattedDateForEdit(date) {
   return util.format('%d/%d/%d %s:%s',
-    ("0" + (date.getMonth() + 1)).slice(-2),
+    ('0' + (date.getMonth() + 1)).slice(-2),
     date.getDate(),
     date.getFullYear(),
     date.getHours(),

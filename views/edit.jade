@@ -4,13 +4,13 @@ block content
   .raised.form
 
     h1= (event? 'Edit event':'Add event')
-    h5= "If you need help reserving a room or promoting your event, check out "
-      = "the revelant wiki "
+    h5= 'If you need help reserving a room or promoting your event, check out '
+      = 'the revelant wiki '
       a(href='https://github.com/rosedu/meta/wiki/Evenimente') page
       | .
     .spacer
 
-    form(method='post', action=(event? '/add?id=' + event._id:'/add'))
+    form(method='post', action=(event? '/events/add?id=' + event._id:'/add'))
 
       .row
         .form-group.col-lg-6
@@ -52,17 +52,17 @@ block content
 
       .row
         .form-group.col-lg-12
-          input(type="checkbox", name="membersonly", checked=((event && event.membersOnly)?'checked':undefined))
-          = " Make event visible only to ROSEdu members"
+          input(type='checkbox', name='membersonly', checked=((event && event.membersOnly)?'checked':undefined))
+          = ' Make event visible only to ROSEdu members'
 
       .row
         .form-group.col-lg-12
-          input(type="checkbox", name="send_mail", checked=((event?undefined:'checked')))
-          = " Tell the community about your event"
+          input(type='checkbox', name='send_mail', checked=((event?undefined:'checked')))
+          = ' Tell the community about your event'
 
       br
       input.btn.btn-success(type='submit', value='Save')
 
       if (event)
-        a(href='/delete?id=' + event._id)
+        a(href='/events/delete?id=' + event._id)
           input.btn.btn-danger.delete_btn(value='Delete event')
