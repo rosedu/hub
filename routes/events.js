@@ -2,6 +2,7 @@ var Event = require('../config/models/events')
 var Macros = require('../config/models/macros')
 var Utils = require('../utils')
 var Markdown = require('markdown').markdown
+var util = require('util')
 
 
 exports.index = function (req, res) {
@@ -31,8 +32,7 @@ exports.index = function (req, res) {
 }
 
 exports.add = function (req, res) {
-  var eventDate = new Date();
-  eventDate = req.body.date;
+  eventDate = new Date(req.body.date)
 
   new_event = {
     'name':        req.body.name,
@@ -85,29 +85,19 @@ exports.delete = function (req, res) {
 
 // Utils
 function getFormattedDate(date) {
-  minutes = date.getMinutes();
-  if (date.getMinutes() == 0) {
-    minutes = "00";
-  };
-  formatted = "{0} {1} {2} {3}:{4}".format(
+  return util.format('%d %s %d %s:%s',
     date.getDate(),
     Macros.months[date.getMonth()],
     date.getFullYear(),
-    date.getHours(),
-    minutes);
-  return formatted;
+    ("0" + date.getHours()).slice(-2),
+    ("0" + date.getMinutes()).slice(-2))
 }
 
 function getFormattedDateForEdit(date) {
-  minutes = date.getMinutes();
-  if (date.getMinutes() == 0) {
-    minutes = "00";
-  };
-  formatted = "{0}/{1}/{2} {3}:{4}".format(
+  return util.format('%d/%d/%d %s:%s',
     ("0" + (date.getMonth() + 1)).slice(-2),
     date.getDate(),
     date.getFullYear(),
     date.getHours(),
-    minutes);
-  return formatted;
+    date.getMinutes())
 }

@@ -103,7 +103,6 @@ function isMember(req, res, next) {
     })
 }
 
-require('string-format')
 
 // Base routes
 var events = require('./routes/events.js')
