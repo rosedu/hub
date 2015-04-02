@@ -120,6 +120,10 @@ var people = require('./routes/people.js')
 app.get('/people', people.index)
 app.get('/people/:user', people.user)
 
+var activities = require('./routes/activities.js')
+app.get('/activities', activities.index)
+app.post('/activities/add', activities.add)
+
 
 // 404 page
 app.use(function(req, res, next) {

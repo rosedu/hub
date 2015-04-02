@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
 var activitySchema = mongoose.Schema({
     name            : String,
     description     : String,
-    edition         : [Edition]
+    edition         : {type: [Edition], default: []}
 })
 
 var Edition = mongoose.Schema({
