@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 
 
 var userSchema = mongoose.Schema({
-	jobs 		:[AEdR],
+	jobs 		: [AEdR],
     google 		: {
         id           : String,
         token        : String,
@@ -20,4 +20,4 @@ var AEdR = mongoose.Schema({
 
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('User', userSchema)
+exports.user = mongoose.model('User', userSchema)

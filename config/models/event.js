@@ -15,14 +15,8 @@ var eventSchema = mongoose.Schema({
 
     activity_id  : String,
     edition_id   : String,
-    people       : [RU]
-})
-
-var RU = mongoose.Schema({
-    role         : String,
-    user_id      : String
 })
 
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('Event', eventSchema)
+exports.event = mongoose.model('Event', eventSchema)

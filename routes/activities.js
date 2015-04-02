@@ -1,4 +1,4 @@
-var Activity = require('../config/models/activity')
+var Activity = require('../config/models/activity').activity
 
 
 exports.index = function(req, res) {

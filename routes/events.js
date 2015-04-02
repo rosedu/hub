@@ -1,4 +1,4 @@
-var Event = require('../config/models/event')
+var Event = require('../config/models/event').event
 var Macros = require('../config/models/macros')
 var Utils = require('../utils')
 var Markdown = require('markdown').markdown

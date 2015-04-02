@@ -8,9 +8,10 @@ var activitySchema = mongoose.Schema({
 })
 
 var Edition = mongoose.Schema({
-    name            : String
+    name            : String,
+    people 			: [String]
 })
 
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('Activity', activitySchema)
+exports.activity = mongoose.model('Activity', activitySchema)
