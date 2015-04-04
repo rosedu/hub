@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  h2 Add a new edition
+  form.raised.form(method='post', action='/editions/add')
+    label Choose activity
+    br
+    select(name='activity_id')
+      each act in activities
+        option(value=act._id) #{act.name}
+
+    br
+    label Edition name:
+    br
+    input(name='name', type='text', required)
+    br
+    label Edition description:
+    br
+    textarea(name='description', rows='5')
+    br
+    input.btn.btn-success(type='submit', value='Add')
+
+  .spacer
+  h2 List all editions
+  for edition in editions
+    p= edition._id
+    p= edition.name
+    br
