@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+var ObjectId = mongoose.Schema.Types.ObjectId
 
 
 var eventSchema = mongoose.Schema({
@@ -13,8 +14,8 @@ var eventSchema = mongoose.Schema({
     membersOnly  : {type: Boolean, default: false},
     tags         : [String],
 
-    activity_id  : String,
-    edition_id   : String,
+    activityId   : ObjectId,
+    editionId    : ObjectId,
 })
 
 

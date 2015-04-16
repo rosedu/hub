@@ -2,14 +2,16 @@ var mongoose = require('mongoose')
 
 
 var activitySchema = mongoose.Schema({
-    name            : String,
-    description     : String,
-    edition         : {type: [Edition], default: []}
+  name            : String,
+  description     : String,
+  edition         : {type: [editionSchema], default: []}
 })
 
-var Edition = mongoose.Schema({
-    name            : String,
-    people 			: [String]
+var editionSchema = mongoose.Schema({
+  name         : String,
+  people       : [String],
+  start        : Date,
+  end          : Date
 })
 
 

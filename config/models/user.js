@@ -1,21 +1,22 @@
 var mongoose = require('mongoose')
+var ObjectId = mongoose.Schema.Types.ObjectId
 
 
 var userSchema = mongoose.Schema({
-	jobs 		: [AEdR],
-    google 		: {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String,
-        avatar 		 : String,
-    }
+  jobs    : [AEdR],
+  google  : {
+    id        : String,
+    token     : String,
+    email     : String,
+    name      : String,
+    avatar    : String,
+  }
 })
 
 var AEdR = mongoose.Schema({
-	activity_id 	: String,
-	edition_id 		: String,
-	role 			: String
+  activityId  : ObjectId,
+  editionId   : ObjectId,
+  role        : String
 })
 
 
