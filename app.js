@@ -123,10 +123,9 @@ app.get('/people/:user', people.user)
 var activities = require('./routes/activities.js')
 app.get('/activities', activities.index)
 app.post('/activities/add', activities.add)
+app.get('/activities/:activity', activities.one)
+app.post('/activities/:activity/add_edition', activities.add_edition)
 
-var editions = require('./routes/editions.js')
-app.get('/editions', editions.index)
-app.post('/editions/add', editions.add)
 
 // 404 page
 app.use(function(req, res, next) {
