@@ -16,4 +16,5 @@ var editionSchema = mongoose.Schema({
 
 
 // create the model for users and expose it to our app
-exports.activity = mongoose.model('Activity', activitySchema)
+exports.activity = mongoose.model('Activity', activitySchema);
+exports.edition = mongoose.model('Edition', Edition);

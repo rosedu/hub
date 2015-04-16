@@ -124,6 +124,9 @@ var activities = require('./routes/activities.js')
 app.get('/activities', activities.index)
 app.post('/activities/add', activities.add)
 
+var editions = require('./routes/editions.js')
+app.get('/editions', editions.index)
+app.post('/editions/add', editions.add)
 
 // 404 page
 app.use(function(req, res, next) {
