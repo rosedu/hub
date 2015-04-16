@@ -1,7 +1,7 @@
-// load the things we need
-var mongoose = require('mongoose');
+var mongoose = require('mongoose')
+var ObjectId = mongoose.Schema.Types.ObjectId
 
-// define the schema for our user model
+
 var eventSchema = mongoose.Schema({
     name         : String,
     start        : Date,
@@ -12,8 +12,12 @@ var eventSchema = mongoose.Schema({
     description  : String,
     publisher    : String,
     membersOnly  : {type: Boolean, default: false},
-    tags         : [String]
-});
+    tags         : [String],
+
+    activityId   : ObjectId,
+    editionId    : ObjectId,
+})
+
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('Event', eventSchema);
+exports.event = mongoose.model('Event', eventSchema)

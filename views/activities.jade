@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h2 Add a new activity
+  form.raised.form(method='post', action='/activities/add')
+    label Activity name:
+    br
+    input(name='name', type='text', required)
+    br
+    label Activity description:
+    br
+    textarea(name='description', rows='5')
+    br
+    input.btn.btn-success(type='submit', value='Add')
+
+  .spacer
+  h2 List all activities
+  for act in activities
+    p= act._id
+    p= act.name
+    p= act.description
+    br
