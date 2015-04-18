@@ -32,7 +32,12 @@ exports.add = function(req, res) {
     'description' : req.body.description
   }
 
-  new Activity(new_activity).save()
+  new Activity(new_activity).save(function(err) {
+    res.render('errors', {
+      'message': 'Failed to save new activity.',
+      'user':   req.user ? req.user.google : false
+    });
+  })
   res.redirect('/activities')
 }
 
