@@ -28,6 +28,8 @@ app.use('/public', express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
+// This is some new comment right here
+
 
 // if NODE_ENV environment variable is set to 'development' then anyone can
 // access the full features of the site, so doesn't need to be a ROSEdu member
