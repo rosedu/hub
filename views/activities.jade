@@ -16,7 +16,7 @@ block content
   .spacer
   h2 List all activities
   for act in activities
-    p= act._id
-    p= act.name
+    p
+      a(href='/activities/' + act._id)= act.name
     p= act.description
     br
