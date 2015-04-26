@@ -1,5 +1,7 @@
 var Activity = require('../config/models/activity').activity
 var Edition  = require('../config/models/activity').edition
+var Role     = require('../config/models/user').role
+var User     = require('../config/models/user').user
 var mongoose = require('mongoose')
 var objId    = mongoose.Types.ObjectId
 
@@ -50,22 +52,40 @@ exports.add_edition = function(req, res) {
   var end_date = new Date(end.substring(7,11), end.substring(3,5), end.substring(0,2))
 
   // Create edition object
-  var newEdition = {
+  var newEdition = new Edition({
     'name'        : req.body.name,
     'start'       : start_date,
     'end'         : end_date
-  }
+  })
 
-  new Edition(newEdition).save(function (err) {
-    if (err) {
-      console.log('[ERR] Could not save edition.')
+  // Add edition to activity object
+  var find = {'_id': objId.fromString(req.params.activity)}
+  var update = {$push: {'edition': newEdition}}
+  Activity.update(find, update).exec()
 
-    } else {
-      // Add edition to activity object
-      var find = {'_id': objId.fromString(req.params.activity)}
-      var update = {$push: {'edition': newEdition}}
-      Activity.update(find, update).exec()
-    }
+  res.redirect('/activities/' + req.params.activity)
+}
+
+// Add a new person to an edition
+exports.add_role = function(req, res) {
+  var role = new Role({
+    'activityId' : objId.fromString(req.params.activity),
+    'editionId'  : objId.fromString(req.body.edition),
+    'role'       : req.body.role
+  })
+
+  // Add role to user jobs
+  var query = {'google.name': req.body.name}
+  var update = {'push': {'jobs': role}}
+  User.update(query, update).exec()
+
+  // Add user to edition
+  var query = {'edition._id': objId.fromString(req.body.edition)}
+  var update = {$addToSet: {'edition.$.people': req.body.name}}
+  Activity.update(query, update).exec(function (err, count) {
+    if (req.user)
+      console.log('* ' + req.user.email + ' added ' + req.body.name + ' as ' +
+        req.body.role + ' for edition: ' + req.body.edition)
   })
 
   res.redirect('/activities/' + req.params.activity)

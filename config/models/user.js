@@ -22,3 +22,4 @@ var AEdR = mongoose.Schema({
 
 // create the model for users and expose it to our app
 exports.user = mongoose.model('User', userSchema)
+exports.role = mongoose.model('Role', AEdR)
