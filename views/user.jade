@@ -1,21 +1,25 @@
 extends layout
 
 block content
-	- if (!user.google.avatar || !user.google.name)
-		.announcement
-			= 'Please go to your profile '
-			a(href='http://plus.google.com/' + user.google.id) page
-			= ' on Google+ and add an avatar and your full name.'
-		.spacer
+  - if (!user.google.avatar || !user.google.name)
+    .announcement
+      = 'Please go to your profile '
+      a(href='http://plus.google.com/' + user.google.id) page
+      = ' on Google+ and add an avatar and your full name.'
+    .spacer
 
-	.user-info
-		.user-avatar
-			- if (user && user.google.avatar)
-				img(src=user.google.avatar, width='300px', height='300px')
-		.user-info
-			h1= user.google.name
-			h4= user.google.email
+  .user-info
+    .user-avatar
+      - if (user && user.google.avatar)
+        img(src=user.google.avatar, width='300px', height='300px')
+    .user-info
+      h1= user.google.name
+      h4= user.google.email
 
-	.spacer
-	.activities
-		h2 Activities
+  .spacer
+  .activities
+    h2 Activities
+    - each job in user.jobs
+      p= 'Role:' + job.role
+      p= 'Activity:' + job.activityId
+      p= 'Edition:' + job.editionId

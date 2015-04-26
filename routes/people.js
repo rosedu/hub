@@ -1,4 +1,4 @@
-var User = require('../config/models/user')
+var User = require('../config/models/user').user
 
 exports.index = function(req, res) {
   User.find({'google.email': /@rosedu.org$/}).exec(gotPeople)

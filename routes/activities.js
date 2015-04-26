@@ -76,7 +76,7 @@ exports.add_role = function(req, res) {
 
   // Add role to user jobs
   var query = {'google.name': req.body.name}
-  var update = {'push': {'jobs': role}}
+  var update = {$push: {'jobs': role}}
   User.update(query, update).exec()
 
   // Add user to edition
