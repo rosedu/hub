@@ -20,6 +20,8 @@ block content
   .activities
     h2 Activities
     - each job in user.jobs
-      p= 'Role:' + job.role
-      p= 'Activity:' + job.activityId
-      p= 'Edition:' + job.editionId
+      - var activity = activities[job.editionId]
+      p= activity.activityName
+      p= job.role + ' for '
+        a(href='/activities/' + activity.link)= activity.name + ' '
+        a(href='/activities/' + activity.link + '/' + activity.edition.link)= activity.edition.name

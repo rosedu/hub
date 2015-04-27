@@ -61,7 +61,7 @@ exports.add_edition = function(req, res) {
   })
 
   // Add edition to activity object
-  var find = {'_id': objId.fromString(req.params.activity)}
+  var find = {'link': req.params.activity}
   var update = {$push: {'edition': newEdition}}
   Activity.update(find, update).exec()
 
@@ -70,28 +70,32 @@ exports.add_edition = function(req, res) {
 
 // Add a new person to an edition
 exports.add_role = function(req, res) {
-  var role = new Role({
-    'activityId' : objId.fromString(req.params.activity),
-    'editionId'  : objId.fromString(req.body.edition),
-    'role'       : req.body.role
-  })
+  Activity.findOne({'link': req.params.activity}).exec(gotActivity)
 
-  // Add role to user jobs
-  var query = {'google.name': req.body.name}
-  var update = {$push: {'jobs': role}}
-  User.update(query, update).exec()
+  function gotActivity(err, one) {
+    var role = new Role({
+      'activityId' : one._id,
+      'editionId'  : objId.fromString(req.body.edition),
+      'role'       : req.body.role
+    })
 
-  // Add user to edition
-  var user = req.body.name + ':' + req.body.role
-  var query = {'edition._id': objId.fromString(req.body.edition)}
-  var update = {$addToSet: {'edition.$.people': user}}
-  Activity.update(query, update).exec(function (err, count) {
-    if (req.user)
-      console.log('* ' + req.user.email + ' added ' + req.body.name + ' as ' +
-        req.body.role + ' for edition: ' + req.body.edition)
-  })
+    // Add role to user jobs
+    var query = {'google.name': req.body.name}
+    var update = {$push: {'jobs': role}}
+    User.update(query, update).exec()
 
-  res.redirect('/activities/' + req.params.activity)
+    // Add user to edition
+    var user = req.body.name + ':' + req.body.role
+    var query = {'edition._id': objId.fromString(req.body.edition)}
+    var update = {$addToSet: {'edition.$.people': user}}
+    Activity.update(query, update).exec(function (err, count) {
+      if (req.user)
+        console.log('* ' + req.user.email + ' added ' + req.body.name + ' as ' +
+          req.body.role + ' for edition: ' + req.body.edition)
+    })
+
+    res.redirect('/activities/' + req.params.activity)
+  }
 }
 
 // List info about one edition

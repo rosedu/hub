@@ -20,7 +20,7 @@ block content
   .spacer
   h5 Add a new role
   roles = ['organiser', 'teacher', 'mentor', 'participant']
-  form(method='post', action='/activities/' + activity._id + '/add_role')
+  form(method='post', action='/activities/' + activity.link + '/add_role')
     input(name='edition', type='hidden', value=edition._id)
     label Name
     input(name='name', type='text', required)
