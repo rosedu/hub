@@ -40,10 +40,6 @@ exports.user = function(req, res) {
       act.edition.forEach(function(ed) {
         _self.activities[ed._id] = JSON.parse(JSON.stringify(act))
         _self.activities[ed._id]['edition'] = JSON.parse(JSON.stringify(ed))
-        // _self.activities[ed._id]['activityId'] = act._id
-        // _self.activities[ed._id]['activityName'] = act.name
-        // _self.activities[ed._id]['activityLink'] = act.link
-        // _self.activities[ed._id]['edition'] = JSON.parse(JSON.stringify(ed))
       })
     })
 
