@@ -13,8 +13,6 @@ var eventSchema = mongoose.Schema({
     publisher    : String,
     membersOnly  : {type: Boolean, default: false},
     tags         : [String],
-
-    activityId   : ObjectId,
     editionId    : ObjectId,
 })
 

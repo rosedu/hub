@@ -28,3 +28,11 @@ block content
         - each role in roles
           option(value= role)= role
       input(type='submit', value='Add')
+
+  .spacer
+  h2 Events
+  - each e in events
+    h5= e.name
+    = 'Dates: ' + e.start + ' ' + e.end
+    br
+    = 'Location: ' + e.location

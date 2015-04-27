@@ -50,6 +50,21 @@ block content
 
       .row
         .form-group.col-lg-6
+          label Select activity and edition of event:
+          select(name='edition')
+            - if (event && !event.editionId)
+              option(value='None', selected) None
+            - else
+              option(value='None') None
+
+            - each ed, i in editions
+              - if (event && event.editionId == i)
+                option(value=i, selected)= ed
+              - else
+                option(value=i)= ed
+
+      .row
+        .form-group.col-lg-6
           label Tags (space separated)
           input.form-control(name='tags', type='text',
             value=(event? event.tags_formatted:false))

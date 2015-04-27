@@ -1,5 +1,6 @@
 var Activity = require('../config/models/activity').activity
 var Edition  = require('../config/models/activity').edition
+var Event    = require('../config/models/event').event
 var Role     = require('../config/models/user').role
 var User     = require('../config/models/user').user
 var Macros   = require('../config/models/macros')
@@ -141,9 +142,17 @@ exports.edition = function(req, res) {
       _self.users[user.google.name]['info'] = user
     })
 
+    var query = {'editionId': _self.edition._id}
+    Event.find(query).exec(gotEvents)
+  }
+
+  function gotEvents(err, events) {
+    _self.events = events
+
     res.render('edition', {
       'activity' : _self.activity,
       'edition'  : _self.edition,
+      'events'   : _self.events,
       'users'    : _self.users,
       'user'     : req.session.user,
       'roles'    : Macros.EVENTS_ROLES
