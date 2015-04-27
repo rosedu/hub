@@ -122,10 +122,10 @@ app.get('/people/:user', people.user)
 
 var activities = require('./routes/activities.js')
 app.get('/activities', activities.index)
-app.post('/activities/add', activities.add)
+app.post('/activities/add', isMember, activities.add)
 app.get('/activities/:activity', activities.one)
-app.post('/activities/:activity/add_edition', activities.add_edition)
-app.post('/activities/:activity/add_role', activities.add_role)
+app.post('/activities/:activity/add_edition', isMember, activities.add_edition)
+app.post('/activities/:activity/add_role', isMember, activities.add_role)
 app.get('/activities/:activity/:edition', activities.edition)
 
 
