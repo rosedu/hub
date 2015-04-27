@@ -80,8 +80,9 @@ exports.add_role = function(req, res) {
   User.update(query, update).exec()
 
   // Add user to edition
+  var user = req.body.name + ':' + req.body.role
   var query = {'edition._id': objId.fromString(req.body.edition)}
-  var update = {$addToSet: {'edition.$.people': req.body.name}}
+  var update = {$addToSet: {'edition.$.people': user}}
   Activity.update(query, update).exec(function (err, count) {
     if (req.user)
       console.log('* ' + req.user.email + ' added ' + req.body.name + ' as ' +
@@ -89,4 +90,57 @@ exports.add_role = function(req, res) {
   })
 
   res.redirect('/activities/' + req.params.activity)
+}
+
+// List info about one edition
+exports.edition = function(req, res) {
+  _self = {}
+
+  var activityId = objId.fromString(req.params.activity)
+  Activity.findOne({'_id': activityId}).exec(gotActivity)
+
+  function gotActivity(err, one) {
+    _self.activity = one
+    // Remove extra data
+    _self.activity.editions = []
+
+    one.edition.forEach(function(ed) {
+      if (ed._id.toString() == req.params.edition)
+        return gotEdition(ed)
+    })
+  }
+
+  function gotEdition(ed) {
+    _self.edition = ed
+    _self.users = {}
+
+    var user_list = []
+    // Reformat people list to be easily processed
+    ed.people.forEach(function(peep) {
+      name = peep.split(':')[0]
+      role = peep.split(':')[1]
+
+      user_list.push(name)
+
+      _self.users[name] = {}
+      _self.users[name]['role'] = role
+      _self.users[name]['info'] = {}
+    })
+
+    var query = {'google.name': {$in: user_list}}
+    User.find(query).exec(gotUsers)
+  }
+
+  function gotUsers(err, users) {
+    users.forEach(function(user) {
+      _self.users[user.google.name]['info'] = user
+    })
+
+    res.render('edition', {
+      'activity' : _self.activity,
+      'edition'  : _self.edition,
+      'users'    : _self.users,
+      'user'     : req.session.user
+    })
+  }
 }

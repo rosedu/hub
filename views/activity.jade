@@ -31,24 +31,9 @@ block content
   .spacer
   h4 List of editions
   - each ed in activity.edition
-    p= ed.name
-    p= ed.start + '---' + ed.end
-    p= ed.people
-
-    .spacer
+    a(href='/activities/' + activity._id + '/' + ed._id)= ed.name
+    br
     h5 People involved
     - each peep in ed.people
       p= peep
-
     .spacer
-    h5 Add a new role
-    roles = ['organiser', 'teacher', 'mentor', 'participant']
-    form(method='post', action='/activities/' + activity._id + '/add_role')
-      input(name='edition', type='hidden', value=ed._id)
-      label Name
-      input(name='name', type='text', required)
-      label Role
-      select(name='role')
-        - each role in roles
-          option(value= role)= role
-      input.btn.btn-success(type='submit', value='Add')

@@ -126,6 +126,7 @@ app.post('/activities/add', activities.add)
 app.get('/activities/:activity', activities.one)
 app.post('/activities/:activity/add_edition', activities.add_edition)
 app.post('/activities/:activity/add_role', activities.add_role)
+app.get('/activities/:activity/:edition', activities.edition)
 
 
 // 404 page
