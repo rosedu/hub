@@ -1,22 +1,24 @@
 extends layout
 
 block content
-  h2 Add a new activity
-  form.raised.form(method='post', action='/activities/add')
-    label Activity name:
-    br
-    input(name='name', type='text', required)
-    br
-    label Activity description:
-    br
-    textarea(name='description', rows='5')
-    br
-    input.btn.btn-success(type='submit', value='Add')
+  - if (user && user.isMember)
+    h2 Add a new activity
+    form.raised.form(method='post', action='/activities/add')
+      label Activity name:
+      br
+      input(name='name', type='text', required)
+      br
+      label Activity description:
+      br
+      textarea(name='description', rows='5', cols='50')
+      .spacer
+      input.btn.btn-success(type='submit', value='Add')
+    .spacer
 
-  .spacer
-  h2 List all activities
+  h2 What we do?
+  br
   for act in activities
-    p
+    h2
       a(href='/activities/' + act.link)= act.name
     p= act.description
     br

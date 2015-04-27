@@ -14,3 +14,4 @@ exports.months =
 	}
 
 exports.EVENTS_PER_PAGE = 10
+exports.EVENTS_ROLES = ['Organiser', 'Teacher', 'Mentor', 'Participant']

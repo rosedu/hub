@@ -2,6 +2,7 @@ var Activity = require('../config/models/activity').activity
 var Edition  = require('../config/models/activity').edition
 var Role     = require('../config/models/user').role
 var User     = require('../config/models/user').user
+var Macros   = require('../config/models/macros')
 var mongoose = require('mongoose')
 var objId    = mongoose.Types.ObjectId
 
@@ -144,7 +145,8 @@ exports.edition = function(req, res) {
       'activity' : _self.activity,
       'edition'  : _self.edition,
       'users'    : _self.users,
-      'user'     : req.session.user
+      'user'     : req.session.user,
+      'roles'    : Macros.EVENTS_ROLES
     })
   }
 }
