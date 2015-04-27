@@ -3,12 +3,14 @@ var mongoose = require('mongoose')
 
 var activitySchema = mongoose.Schema({
   name            : String,
+  link            : String,
   description     : String,
   edition         : {type: [editionSchema], default: []}
 })
 
 var editionSchema = mongoose.Schema({
   name         : String,
+  link         : String,
   people       : [String],
   start        : Date,
   end          : Date

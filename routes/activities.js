@@ -20,10 +20,10 @@ exports.index = function(req, res) {
 
 // Single activity page
 exports.one = function(req, res) {
-  var activityId = objId.fromString(req.params.activity)
-  Activity.findOne({'_id': activityId}).exec(gotActivity)
+  Activity.findOne({'link': req.params.activity}).exec(gotActivity)
 
   function gotActivity(err, one) {
+    if (!one) return res.redirect('/activities')
     res.render('activity', {
       'activity'  : one,
       'user'      : req.session.user
@@ -35,6 +35,7 @@ exports.one = function(req, res) {
 exports.add = function(req, res) {
   new Activity({
     'name'        : req.body.name,
+    'link'        : encodeURIComponent(req.body.name.replace(/\s+/g, '')),
     'description' : req.body.description
   }).save(function(err) {
     if (err) console.log('[ERR] Could not save activity.')
@@ -54,6 +55,7 @@ exports.add_edition = function(req, res) {
   // Create edition object
   var newEdition = new Edition({
     'name'        : req.body.name,
+    'link'        : encodeURIComponent(req.body.name.replace(/\s+/g, '')),
     'start'       : start_date,
     'end'         : end_date
   })
@@ -95,9 +97,7 @@ exports.add_role = function(req, res) {
 // List info about one edition
 exports.edition = function(req, res) {
   _self = {}
-
-  var activityId = objId.fromString(req.params.activity)
-  Activity.findOne({'_id': activityId}).exec(gotActivity)
+  Activity.findOne({'link': req.params.activity}).exec(gotActivity)
 
   function gotActivity(err, one) {
     _self.activity = one
@@ -105,8 +105,8 @@ exports.edition = function(req, res) {
     _self.activity.editions = []
 
     one.edition.forEach(function(ed) {
-      if (ed._id.toString() == req.params.edition)
-        return gotEdition(ed)
+      if (ed.link === req.params.edition)
+        gotEdition(ed)
     })
   }
 

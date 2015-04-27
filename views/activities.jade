@@ -17,6 +17,6 @@ block content
   h2 List all activities
   for act in activities
     p
-      a(href='/activities/' + act._id)= act.name
+      a(href='/activities/' + act.link)= act.name
     p= act.description
     br

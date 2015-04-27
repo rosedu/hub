@@ -9,7 +9,7 @@ block content
 
   .spacer
   h4 Add a new edition
-  form.raised.form(method='post', action='/activities/' + activity._id + '/add_edition')
+  form.raised.form(method='post', action='/activities/' + activity.link + '/add_edition')
     label Edition name
     br
     input(name='name', type='text', required)
@@ -31,7 +31,7 @@ block content
   .spacer
   h4 List of editions
   - each ed in activity.edition
-    a(href='/activities/' + activity._id + '/' + ed._id)= ed.name
+    a(href='/activities/' + activity.link + '/' + ed.link)= ed.name
     br
     h5 People involved
     - each peep in ed.people
