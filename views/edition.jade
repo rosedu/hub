@@ -31,8 +31,14 @@ block content
 
   .spacer
   h2 Events
-  - each e in events
-    h5= e.name
-    = 'Dates: ' + e.start + ' ' + e.end
-    br
-    = 'Location: ' + e.location
+  - if (events.length != 0)
+    - each e in events
+      h5= e.name
+      = 'Dates: ' + e.start + ' ' + e.end
+      br
+      = 'Location: ' + e.location
+  - else
+    h4 No events here!
+
+  - if (user && user.isMember)
+      a(href='/events/edit') Add an event.
