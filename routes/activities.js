@@ -96,7 +96,7 @@ exports.add_role = function(req, res) {
           req.body.role + ' for edition: ' + req.body.edition)
     })
 
-    res.redirect('/activities/' + req.params.activity)
+    res.redirect('/activities/' + req.params.activity + '/' + req.params.edition)
   }
 }
 

@@ -19,7 +19,7 @@ block content
 
   - if (user && user.isMember)
     h2 Add a new role
-    form(method='post', action='/activities/' + activity.link + '/add_role')
+    form(method='post', action='/activities/' + activity.link + '/' + edition.link + '/add_role')
       input(name='edition', type='hidden', value=edition._id)
       label Name
       input(name='name', type='text', required)
