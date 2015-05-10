@@ -1,35 +1,46 @@
 extends layout
 
 block content
-  h2= activity.name
+  h1= activity.name
 
   .spacer
-  h4 Description
+  h2 Description
   p= activity.description
 
   .spacer
-  h4 Add a new edition
-  form.raised.form(method='post', action='/activities/' + activity._id + '/add_edition')
-    label Edition name
-    br
-    input(name='name', type='text', required)
-    .row
-      .form-group.col-lg-6
-        label Start time
-        br
-        input.datepicker(name='start_date', type='text', required)
-    .row
-      .form-group.col-lg-6
-        label End time
-        br
-        input.datepicker(name='end_date', type='text', required)
-    script.
-      $('.datepicker').datepicker({format: 'dd/mm/yyyy'})
-    br
-    input.btn.btn-success(type='submit', value='Add')
+  - if (user && user.isMember)
+    h2 Add a new edition
+    form.raised.form(method='post', action='/activities/' + activity.link + '/add_edition')
+      .row
+        .form-group.col-lg-6
+          label Edition name
+          br
+          input(name='name', type='text', required)
+      .row
+        .form-group.col-lg-6
+          label Start time
+          br
+          input.datepicker(name='start_date', type='text', required)
+      .row
+        .form-group.col-lg-6
+          label End time
+          br
+          input.datepicker(name='end_date', type='text', required)
+      script.
+        $('.datepicker').datepicker({format: 'dd/mm/yyyy'})
+      br
+      input.btn.btn-success(type='submit', value='Add')
 
   .spacer
-  h4 List of editions
-  - each ed in activity.edition
-    p= ed.name
-    p= ed.start + '---' + ed.end
+  h2 All project editions
+  - if (activity.edition.length != 0)
+    - each ed in activity.edition
+      h2
+        a(href='/activities/' + activity.link + '/' + ed.link)= ed.name
+      h4 People involved
+      - each peep in ed.people
+        p= peep
+      .spacer
+  - else
+    h4 No editions yet!
+  .spacer

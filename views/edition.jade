@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  h1= activity.name + ' ' + edition.name
+
+  .spacer
+  h5= 'Start: ' + edition.start
+  h5= 'End: ' + edition.end
+
+  .spacer
+  h2 People involved
+  - for (var u in users)
+    - if (users[u].info.google)
+      a(href='/people/' + users[u].info.google.email.split('@')[0]) #{u}
+      = ' - ' + users[u].role
+    - else
+      p #{u} - #{users[u].role}
+  .spacer
+
+  - if (user && user.isMember)
+    h2 Add a new role
+    form(method='post', action='/activities/' + activity.link + '/' + edition.link + '/add_role')
+      input(name='edition', type='hidden', value=edition._id)
+      label Name
+      input(name='name', type='text', required)
+      label Role
+      select(name='role')
+        - each role in roles
+          option(value= role)= role
+      input(type='submit', value='Add')
+
+  .spacer
+  h2 Events
+  - if (events.length != 0)
+    - each e in events
+      h5= e.name
+      = 'Dates: ' + e.start + ' ' + e.end
+      br
+      = 'Location: ' + e.location
+  - else
+    h4 No events here!
+
+  - if (user && user.isMember)
+      a(href='/events/edit') Add an event.

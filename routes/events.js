@@ -1,8 +1,11 @@
-var Event = require('../config/models/event').event
-var Macros = require('../config/models/macros')
-var Utils = require('../utils')
+var Activity = require('../config/models/activity').activity
+var Event    = require('../config/models/event').event
+var Macros   = require('../config/models/macros')
+var Utils    = require('../utils')
 var Markdown = require('markdown').markdown
-var util = require('util')
+var util     = require('util')
+var mongoose = require('mongoose')
+var objId    = mongoose.Types.ObjectId
 
 
 exports.index = function (req, res) {
@@ -58,7 +61,8 @@ exports.add = function (req, res) {
     'link':        req.body.link,
     'description': req.body.description,
     'membersOnly': ((req.body.membersonly == 'on') ? true : false),
-    'tags':        req.body.tags.split(' ')
+    'tags':        req.body.tags.split(' '),
+    'editionId':   ((req.body.edition != 'None') ? objId.fromString(req.body.edition) : null)
   }
 
   // Send announcement to community
@@ -76,7 +80,19 @@ exports.add = function (req, res) {
 }
 
 exports.edit = function (req, res) {
-  Event.findOne({'_id': req.query.id}).exec(gotEvent)
+  _self = {}
+  Activity.find().exec(gotActivities)
+
+  function gotActivities(err, activities) {
+    _self.editions = {}
+
+    activities.forEach(function(act) {
+      act.edition.forEach(function(ed) {
+        _self.editions[ed._id] = act.name + ':' + ed.name
+      })
+    })
+    Event.findOne({'_id': req.query.id}).exec(gotEvent)
+  }
 
   function gotEvent(err, theEvent) {
     // If we are in edit mode, hence the event exists
@@ -89,8 +105,9 @@ exports.edit = function (req, res) {
     };
 
     res.render('edit', {
-      'event': theEvent,
-      'user':  req.session.user
+      'event'    : theEvent,
+      'user'     : req.session.user,
+      'editions' : _self.editions
     })
   }
 }
