@@ -133,7 +133,7 @@ exports.edition = function(req, res) {
       _self.users[name]['info'] = {}
     })
 
-    var query = {'google.name': {$in: user_list}}
+    var query = {'google.name': {$in: user_list}, 'google.email': /@rosedu.org$/}
     User.find(query).exec(gotUsers)
   }
 

@@ -13,6 +13,7 @@ block content
     - if (users[u].info.google)
       a(href='/people/' + users[u].info.google.email.split('@')[0]) #{u}
       = ' - ' + users[u].role
+      br
     - else
       p #{u} - #{users[u].role}
   .spacer
