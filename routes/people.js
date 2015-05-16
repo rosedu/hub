@@ -11,7 +11,8 @@ exports.index = function(req, res) {
   		son.google.username = son.google.email.split('@')[0]
   	})
     res.render('people', {
-    	'people': all
+      'people': all,
+      'user'  : req.session.user
     })
   }
 }
