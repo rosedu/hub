@@ -2,23 +2,28 @@ extends layout
 
 block content
   - if (user && user.isMember)
-    h2 Add a new activity
-    form.raised.form(method='post', action='/activities/add')
+    h2= (activity? 'Edit activity':'Add a new activity')
+    form.raised.form(method='post', action=(activity? '/activities/add/?id='+activity.id:'/activities/add'))
       label Activity name:
       br
-      input(name='name', type='text', required)
+      input(name='name', type='text', value=(activity? activity.name:false), required)
       br
       label Activity description:
       br
       textarea(name='description', rows='5', cols='50')
+        - if (activity)
+          | #{activity.description}
       .spacer
-      input.btn.btn-success(type='submit', value='Add')
+      input.btn.btn-success(type='submit', value=(activity? 'Update':'Add'))
     .spacer
 
-  h2 What we do?
-  br
-  for act in activities
-    h2
-      a(href='/activities/' + act.link)= act.name
-    p= act.description
+  - if (activities)
+    h2 What we do?
     br
+    for act in activities
+      h2
+        a(href='/activities/' + act.link)= act.name
+      - if (user && user.isMember)
+        a(href='/activities/edit?link=' + act.link)= 'Edit'
+      p= act.description
+      br

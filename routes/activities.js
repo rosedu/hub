@@ -11,7 +11,7 @@ var objId    = mongoose.Types.ObjectId
 // Activities page
 exports.index = function(req, res) {
   Activity.find().exec(gotActivities)
-
+  console.log(req.session.user);
   function gotActivities(err, all) {
     res.render('activities', {
       'activities': all,
@@ -33,15 +33,40 @@ exports.one = function(req, res) {
   }
 }
 
+// Edit an activity
+exports.edit = function(req, res) {
+  Activity.findOne({'link': req.query.link}).exec(gotActivity)
+
+  function gotActivity(err, theActivity) {
+    if(!theActivity)
+      return res.redirect('/activities')
+    res.render('activities', {
+      'activity' : theActivity,
+      'user'     : req.session.user
+    })
+  }
+}
+
 // Add a new activity handle
 exports.add = function(req, res) {
-  new Activity({
+
+  //Create new activity and add it if is new or update it if we got the id
+  new_activity = {
     'name'        : req.body.name,
     'link'        : encodeURIComponent(req.body.name.replace(/\s+/g, '')),
     'description' : req.body.description
-  }).save(function(err) {
-    if (err) console.log('[ERR] Could not save activity.')
-  })
+  }
+
+  if (req.query.id) {
+    Activity.update({'_id': req.query.id}, new_activity).exec()
+    //console.log("Sunt pe edit si updatez"+req.body.name);
+  }
+  else {
+    new Activity(new_activity).save(function(err) {
+      if (err) console.log('[ERR] Could not save activity.')
+    })
+    //console.log("adaug activitate noua.")
+  }
 
   res.redirect('/activities')
 }
