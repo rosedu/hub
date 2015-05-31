@@ -11,7 +11,7 @@ var objId    = mongoose.Types.ObjectId
 // Activities page
 exports.index = function(req, res) {
   Activity.find().exec(gotActivities)
-  console.log(req.session.user);
+
   function gotActivities(err, all) {
     res.render('activities', {
       'activities': all,
@@ -59,13 +59,11 @@ exports.add = function(req, res) {
 
   if (req.query.id) {
     Activity.update({'_id': req.query.id}, new_activity).exec()
-    //console.log("Sunt pe edit si updatez"+req.body.name);
   }
   else {
     new Activity(new_activity).save(function(err) {
       if (err) console.log('[ERR] Could not save activity.')
     })
-    //console.log("adaug activitate noua.")
   }
 
   res.redirect('/activities')
