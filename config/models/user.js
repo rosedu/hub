@@ -5,6 +5,7 @@ var Macros   = require('./macros')
 
 var userSchema = mongoose.Schema({
   jobs    : [AEdR],
+  member  : Boolean,
   google  : {
     id        : String,
     token     : String,

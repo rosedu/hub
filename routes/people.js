@@ -2,7 +2,7 @@ var Activity = require('../config/models/activity').activity
 var User     = require('../config/models/user').user
 
 exports.index = function(req, res) {
-  User.find({'google.email': /@rosedu.org$/}).exec(gotPeople)
+  User.find({$or: [{'google.email': /@rosedu.org$/}, {'member': true}]}).exec(gotPeople)
 
   function gotPeople(err, all) {
 
@@ -47,8 +47,16 @@ exports.user = function(req, res) {
     })
 
     res.render('user', {
-      'user'       : _self.user,
-      'activities' : _self.activities
+      'cuser'      : _self.user,
+      'activities' : _self.activities,
+      'user'       : req.user
     })
   }
+}
+
+exports.add = function(req, res) {
+  User.update({'_id': req.query.id}, {$set: {'member': true}}).exec(function (err) {
+    if (!err) console.log(req.user.google.email + ' recognized ' + req.query.link + ' as member.')
+  })
+  res.redirect('/people/' + req.query.link)
 }

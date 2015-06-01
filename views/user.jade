@@ -1,25 +1,31 @@
 extends layout
 
 block content
-  - if (!user.google.avatar || !user.google.name)
+  - if (user && user.google.email == cuser.google.email && (!cuser.google.avatar || !cuser.google.name))
     .announcement
       = 'Please go to your profile '
-      a(href='http://plus.google.com/' + user.google.id) page
+      a(href='http://plus.google.com/' + cuser.google.id) page
       = ' on Google+ and add an avatar and your full name.'
     .spacer
 
   .user-info
     .user-avatar
-      - if (user && user.google.avatar)
-        img(src=user.google.avatar, width='300px', height='300px')
+      - if (cuser && cuser.google.avatar)
+        img(src=cuser.google.avatar, width='300px', height='300px')
+      - if (user && (user.member || user.google.email.split('@')[1] == 'rosedu.org') && cuser.google.email.split('@')[1] !== 'rosedu.org')
+        .spacer
+        - if (!cuser.member)
+          a.btn.btn-primary(href='/people/add?id=' + cuser._id + '&link=' + encodeURIComponent(cuser.google.email)) Add as member
+        - else
+          a.btn.btn-primary(href='#', disabled) Already member of ROSEdu
     .user-info
-      h1= user.google.name
-      h4= user.google.email
+      h1= cuser.google.name
+      h4= cuser.google.email
 
   .spacer
   .activities
     h2 Activities
-    - each job in user.jobs
+    - each job in cuser.jobs
       - var activity = activities[job.editionId]
       p= activity.activityName
       p= job.role + ' for '

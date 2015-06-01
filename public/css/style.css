@@ -259,7 +259,9 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 
 /********* USER **********/
 .user-avatar {
+	width: 300px;
 	float: left;
+	text-align: center;
 }
 
 .user-info {

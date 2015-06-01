@@ -3,10 +3,10 @@ extends layout
 block content
   - if (user)
     .user.card
-      - if (user.isMember)
+      - if (user.name)
         a(href='/people/' + encodeURIComponent(user.email))= user.name
       - else
-        b= user.name
+        a(href='/people/' + encodeURIComponent(user.email)) Profile page
       br
       = user.email
       | <br><br>

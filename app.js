@@ -38,6 +38,9 @@ app.post('/auth/google/callback', passport.authenticate('google'), function(req,
     profile = req.user.google
     isMember = (profile.email.indexOf(email_suffix) > -1) ? true:false
 
+    // If user is recognized as member
+    if (req.user.member) isMember = true
+
     req.session.user = {}
     req.session.user.id = profile.id
     req.session.user.name = profile.name
@@ -118,6 +121,7 @@ app.get('/events/:page', events.index)
 
 var people = require('./routes/people.js')
 app.get('/people', people.index)
+app.get('/people/add', isMember, people.add)
 app.get('/people/:user', people.user)
 
 var activities = require('./routes/activities.js')
