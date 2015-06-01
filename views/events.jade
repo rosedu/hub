@@ -4,7 +4,7 @@ block content
   - if (user)
     .user.card
       - if (user.isMember)
-        a(href='/people/' + user.email.split('@')[0])= user.name
+        a(href='/people/' + encodeURIComponent(user.email))= user.name
       - else
         b= user.name
       br

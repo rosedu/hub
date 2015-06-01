@@ -4,7 +4,7 @@ block content
 	.people-pannel
 		- each p in people
 			.person(data-name=p.google.name)
-				a(href='/people/' + p.google.username)
+				a(href='/people/' + encodeURIComponent(p.google.email))
 					.avatar-container
 						img(src=p.google.avatar)
 					.name-container

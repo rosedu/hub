@@ -19,9 +19,11 @@ exports.index = function(req, res) {
 
 exports.user = function(req, res) {
   _self = {}
-  User.findOne({'google.email': req.params.user + '@rosedu.org'}).exec(gotUser)
+  User.findOne({'google.email': decodeURIComponent(req.params.user)}).exec(gotUser)
 
   function gotUser(err, user) {
+    if (!user) return res.redirect('/people')
+
     _self.user = user
     var edition_list = []
 
