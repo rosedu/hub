@@ -3,7 +3,6 @@ var Event    = require('../config/models/event').event
 var Macros   = require('../config/models/macros')
 var Utils    = require('../utils')
 var Markdown = require('markdown').markdown
-var util     = require('util')
 var mongoose = require('mongoose')
 var objId    = mongoose.Types.ObjectId
 
@@ -22,11 +21,11 @@ exports.index = function (req, res) {
     // Iterate in reverse order so we can remove items from list
     for (i = events.length-1; i >= 0; i--) {
       events[i].startMonth = Macros.months[events[i].start.getMonth()]
-      events[i].startDateFormatted = getFormattedDate(events[i].start)
+      events[i].startDateFormatted = Utils.getFormattedDateTime(events[i].start)
 
       if (events[i].end) {
         events[i].endMonth = Macros.months[events[i].end.getMonth()]
-        events[i].endDateFormatted = getFormattedDate(events[i].end)
+        events[i].endDateFormatted = Utils.getFormattedDateTime(events[i].end)
       }
 
       events[i].description = Markdown.toHTML(events[i].description)
@@ -99,9 +98,9 @@ exports.edit = function (req, res) {
     if (theEvent) {
       // Format event date.
       if (theEvent.start)
-        theEvent.startDateFormatted = getFormattedDateForEdit(theEvent.start)
+        theEvent.startDateFormatted = Utils.getFormattedDateTimeForEdit(theEvent.start)
       if (theEvent.end)
-        theEvent.endDateFormatted = getFormattedDateForEdit(theEvent.end)
+        theEvent.endDateFormatted = Utils.getFormattedDateTimeForEdit(theEvent.end)
       // Format tags list
       theEvent.tags_formatted = theEvent.tags.toString().replace(/,/g, ' ')
     };
@@ -118,24 +117,4 @@ exports.delete = function (req, res) {
   Event.remove({'_id': req.query.id}).exec(function(err, count) {
     res.redirect('/events');
   })
-}
-
-
-// Utils
-function getFormattedDate(date) {
-  return util.format('%d %s %d %s:%s',
-    date.getDate(),
-    Macros.months[date.getMonth()],
-    date.getFullYear(),
-    ('0' + date.getHours()).slice(-2),
-    ('0' + date.getMinutes()).slice(-2))
-}
-
-function getFormattedDateForEdit(date) {
-  return util.format('%d/%d/%d %s:%s',
-    ('0' + (date.getMonth() + 1)).slice(-2),
-    date.getDate(),
-    date.getFullYear(),
-    date.getHours(),
-    date.getMinutes())
 }

@@ -1,11 +1,11 @@
 extends layout
 
 block content
-  h1= activity.name + ' ' + edition.name
+  h1= activity.name + ' ' + myedition.name
 
   .spacer
-  h5= 'Start: ' + edition.start
-  h5= 'End: ' + edition.end
+  h5= 'Start: ' + myedition.start
+  h5= 'End: ' + myedition.end
 
   .spacer
   h2 People involved
@@ -20,8 +20,8 @@ block content
 
   - if (user && user.isMember)
     h2 Add a new role
-    form(method='post', action='/activities/' + activity.link + '/' + edition.link + '/add_role')
-      input(name='edition', type='hidden', value=edition._id)
+    form(method='post', action='/activities/' + activity.link + '/' + myedition.link + '/add_role')
+      input(name='edition', type='hidden', value=myedition._id)
       label Name
       input(name='name', type='text', required)
       label Role
@@ -44,3 +44,14 @@ block content
 
   - if (user && user.isMember)
       a(href='/events/edit') Add an event.
+
+  .spacer
+  - if (user && user.isMember)
+    h2 Statistics (for members only)
+    p= 'Enrolments: ' + myedition.enrolments
+    p= 'Participants: ' + myedition.participants
+    p= 'Prizes: ' + myedition.prizes
+    p= 'Projects: ' + myedition.projects
+    p= 'Contributions: ' + myedition.contributions
+
+    a(href='/activities/' + activity.link + '?link=' + myedition.link) Edit statistics
