@@ -9,27 +9,70 @@ block content
 
   .spacer
   - if (user && user.isMember)
-    h2 Add a new edition
-    form.raised.form(method='post', action='/activities/' + activity.link + '/add_edition')
+    h2= (edition? 'Edit edition':'Add a new edition')
+
+    - var form_action = '/activities/' + activity.link + '/add_edition'
+    form.raised.form(method='post',
+      action=(edition? form_action + '?link=' + edition.link : form_action))
+
       .row
         .form-group.col-lg-6
           label Edition name
           br
-          input(name='name', type='text', required)
+          input(
+            name='name', type='text', required
+            value=(edition? edition.name:false))
       .row
         .form-group.col-lg-6
           label Start time
           br
-          input.datepicker(name='start_date', type='text', required)
+          input.datepicker(
+            name='start_date', type='text', required
+            value=(edition? edition.start_format:false))
       .row
         .form-group.col-lg-6
           label End time
           br
-          input.datepicker(name='end_date', type='text', required)
+          input.datepicker(
+            name='end_date', type='text', required
+            value=(edition? edition.end_format:false))
+      .row
+        .form-group.col-lg-12
+          h3 Statistics (can be filled in later)
+          label Number of people that signed up
+          input(
+            name='enrolments', type='text',
+            value=(edition? edition.enrolments:false))
+          br
+          label Number of people that actualy participated
+          input(
+            name='participants', type='text',
+            value=(edition? edition.participants:false))
+          br
+          label Number of prizes offered
+          input(
+            name='prizes', type='text',
+            value=(edition? edition.prizes:false))
+          br
+          label Budget used for this edition
+          input(
+            name='budget', type='text',
+            value=(edition? edition.budget:false))
+          br
+          label Number of projects involved
+          input(
+            name='projects', type='text',
+            value=(edition? edition.projects:false))
+          br
+          label Number of contributions
+          input(
+            name='contributions', type='text',
+            value=(edition? edition.contributions:false))
+
       script.
         $('.datepicker').datepicker({format: 'dd/mm/yyyy'})
       br
-      input.btn.btn-success(type='submit', value='Add')
+      input.btn.btn-success(type='submit', value=(edition? 'Update' : 'Add'))
 
   .spacer
   h2 All project editions

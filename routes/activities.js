@@ -4,6 +4,7 @@ var Event    = require('../config/models/event').event
 var Role     = require('../config/models/user').role
 var User     = require('../config/models/user').user
 var Macros   = require('../config/models/macros')
+var Utils    = require('../utils')
 var mongoose = require('mongoose')
 var objId    = mongoose.Types.ObjectId
 
@@ -26,8 +27,25 @@ exports.one = function(req, res) {
 
   function gotActivity(err, one) {
     if (!one) return res.redirect('/activities')
+
+    edition = null
+    if (req.query.link) {
+      //We are in edit edition mode
+      one.edition.forEach(function(ed) {
+        if (ed.link == req.query.link)
+          edition = ed
+      })
+
+      if (edition) {
+        // Format dates from Date Object to Datepicket string
+        edition.start_format = Utils.getFormattedDateForEdit(edition.start)
+        edition.end_format   = Utils.getFormattedDateForEdit(edition.end)
+      }
+    }
+
     res.render('activity', {
       'activity'  : one,
+      'edition'   : edition,
       'user'      : req.session.user
     })
   }
@@ -69,26 +87,60 @@ exports.add = function(req, res) {
   res.redirect('/activities')
 }
 
-// Add a new edition handle
+// Add or edit an edition
 exports.add_edition = function(req, res) {
-  // Get dates and format them for js date object
-  var start = req.body.start_date
-  var start_date = new Date(start.substring(7,11), start.substring(3,5), start.substring(0,2))
-  var end = req.body.end_date
-  var end_date = new Date(end.substring(7,11), end.substring(3,5), end.substring(0,2))
+  // Format dates from Datepicker string to Date Obj
+  var ed_start_date = Utils.setFormattedDateForEdit(req.body.start_date)
+  var ed_end_date   = Utils.setFormattedDateForEdit(req.body.end_date)
+
+  // Generate link of edition from name, minus the whitespaces, all URI encoded
+  var ed_link = encodeURIComponent(req.body.name.replace(/\s+/g, ''))
 
   // Create edition object
   var newEdition = new Edition({
-    'name'        : req.body.name,
-    'link'        : encodeURIComponent(req.body.name.replace(/\s+/g, '')),
-    'start'       : start_date,
-    'end'         : end_date
+    'name'         : req.body.name,
+    'link'         : ed_link,
+    'start'        : ed_start_date,
+    'end'          : ed_end_date,
+
+    'enrolments'   : req.body.enrolments,
+    'participants' : req.body.participants,
+    'prizes'       : req.body.prizes,
+    'budget'       : req.body.budget,
+    'projects'     : req.body.projects,
+    'contributions': req.body.contributions
   })
 
-  // Add edition to activity object
-  var find = {'link': req.params.activity}
-  var update = {$push: {'edition': newEdition}}
-  Activity.update(find, update).exec()
+  // Commit to DB
+  if (req.query.link) {
+    // Update existing edition
+    Activity.update({
+      'link': req.params.activity,
+      'edition.link': req.query.link
+    }, {'$set': {
+      'edition.$.name'         : req.body.name,
+      'edition.$.link'         : ed_link,
+      'edition.$.start'        : ed_start_date,
+      'edition.$.end'          : ed_end_date,
+
+      'edition.$.enrolments'   : req.body.enrolments,
+      'edition.$.participants' : req.body.participants,
+      'edition.$.prizes'       : req.body.prizes,
+      'edition.$.budget'       : req.body.budget,
+      'edition.$.projects'     : req.body.projects,
+      'edition.$.contributions': req.body.contributions
+    }}).exec(function (err) {
+      if (err) console.log(err)
+    })
+
+  } else {
+    // Push new edition to activity
+    var query  = {'link': req.params.activity}
+    var update = {$push: {'edition': newEdition}}
+    Activity.update(query, update).exec(function (err) {
+      if (err) console.log(err)
+    })
+  }
 
   res.redirect('/activities/' + req.params.activity)
 }
@@ -135,12 +187,17 @@ exports.edition = function(req, res) {
 
     one.edition.forEach(function(ed) {
       if (ed.link === req.params.edition)
-        gotEdition(ed)
+        _self.edition = ed
     })
+
+    if (_self.edition) {
+      gotEdition(_self.edition)
+    } else {
+      return res.redirect('/activities/' + req.params.activity)
+    }
   }
 
   function gotEdition(ed) {
-    _self.edition = ed
     _self.users = {}
 
     var user_list = []
@@ -174,7 +231,7 @@ exports.edition = function(req, res) {
 
     res.render('edition', {
       'activity' : _self.activity,
-      'edition'  : _self.edition,
+      'myedition': _self.edition,
       'events'   : _self.events,
       'users'    : _self.users,
       'user'     : req.session.user,

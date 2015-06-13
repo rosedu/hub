@@ -13,7 +13,13 @@ var editionSchema = mongoose.Schema({
   link         : String,
   people       : [String], // Saved as NAME:ROLE
   start        : Date,
-  end          : Date
+  end          : Date,
+  enrolments   : Number,
+  participants : Number,
+  prizes       : Number,
+  budget       : Number,
+  projects     : Number,
+  contributions: Number
 })
 
 
