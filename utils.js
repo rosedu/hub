@@ -75,6 +75,3 @@ exports.setFormattedDateForEdit = function(datestr) {
     datestr.substring(0,2)
   )
 }
-
-
-

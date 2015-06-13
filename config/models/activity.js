@@ -17,7 +17,6 @@ var editionSchema = mongoose.Schema({
   enrolments   : Number,
   participants : Number,
   prizes       : Number,
-  budget       : Number,
   projects     : Number,
   contributions: Number
 })

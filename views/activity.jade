@@ -39,12 +39,12 @@ block content
       .row
         .form-group.col-lg-12
           h3 Statistics (can be filled in later)
-          label Number of people that signed up
+          label Number of people who signed up
           input(
             name='enrolments', type='text',
             value=(edition? edition.enrolments:false))
           br
-          label Number of people that actualy participated
+          label Number of people who actually participated
           input(
             name='participants', type='text',
             value=(edition? edition.participants:false))
@@ -54,12 +54,7 @@ block content
             name='prizes', type='text',
             value=(edition? edition.prizes:false))
           br
-          label Budget used for this edition
-          input(
-            name='budget', type='text',
-            value=(edition? edition.budget:false))
-          br
-          label Number of projects involved
+          label Number of projects contributed at
           input(
             name='projects', type='text',
             value=(edition? edition.projects:false))

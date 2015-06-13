@@ -106,7 +106,6 @@ exports.add_edition = function(req, res) {
     'enrolments'   : req.body.enrolments,
     'participants' : req.body.participants,
     'prizes'       : req.body.prizes,
-    'budget'       : req.body.budget,
     'projects'     : req.body.projects,
     'contributions': req.body.contributions
   })
@@ -126,7 +125,6 @@ exports.add_edition = function(req, res) {
       'edition.$.enrolments'   : req.body.enrolments,
       'edition.$.participants' : req.body.participants,
       'edition.$.prizes'       : req.body.prizes,
-      'edition.$.budget'       : req.body.budget,
       'edition.$.projects'     : req.body.projects,
       'edition.$.contributions': req.body.contributions
     }}).exec(function (err) {
