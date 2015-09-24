@@ -73,6 +73,7 @@ exports.add = function(req, res) {
   //Create new activity and add it if is new or update it if we got the id
   new_activity = {
     'name'        : req.body.name,
+    'logo'        : req.body.logo,
     'link'        : encodeURIComponent(req.body.name.replace(/\s+/g, '')),
     'description' : req.body.description
   }

@@ -2,28 +2,35 @@ extends layout
 
 block content
   - if (user && user.isMember)
-    h2= (activity? 'Edit activity':'Add a new activity')
-    form.raised.form(method='post', action=(activity? '/activities/add/?id='+activity.id:'/activities/add'))
-      label Activity name:
+
+    - var query = (activity? '/?id=' + activity.id : '')
+    - var form_action = '/activities/add' + query
+    form.raised.form(method='post', action=form_action)
+      h2= (activity? 'Edit activity':'Add a new activity')
       br
-      input(name='name', type='text', value=(activity? activity.name:false), required)
-      br
-      label Activity description:
-      br
-      textarea(name='description', rows='5', cols='50')
+      input.form-control(name='name', type='text', placeholder='Name',
+                         value=(activity? activity.name:false), required)
+      input.form-control(name='logo', type='text', placeholder='Logo URL',
+                         value=(activity? activity.logo:false))
+      textarea.form-control(name='description', placeholder='Description',
+                            rows='5', cols='50')
         - if (activity)
           | #{activity.description}
       .spacer
       input.btn.btn-success(type='submit', value=(activity? 'Update':'Add'))
     .spacer
+  .spacer
 
   - if (activities)
     h2 What we do?
     br
     for act in activities
-      h2
-        a(href='/activities/' + act.link)= act.name
-      - if (user && user.isMember)
-        a(href='/activities/edit?link=' + act.link)= 'Edit'
-      p= act.description
-      br
+      .activity
+        img(src=act.logo)
+        .activity-controls
+          - if (user && user.isMember)
+            a(href='/activities/edit?link=' + act.link)= 'Edit'
+        h2: a(href='/activities/' + act.link)= act.name
+        p= act.description
+        br
+    .spacer

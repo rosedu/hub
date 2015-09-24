@@ -265,6 +265,26 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 	font-size: 12px;
 }
 
+.form-control {
+	margin-bottom: 20px;
+}
+
+/********* USER **********/
+.activity img {
+	float: left;
+	width: auto;
+	height: 100px;
+}
+
+.activity h2 {
+	margin-top: 20px;
+}
+
+.activity-controls {
+	float: right;
+}
+
+
 /********* USER **********/
 .user-avatar {
 	width: 300px;
