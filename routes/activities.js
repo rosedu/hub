@@ -8,6 +8,8 @@ var Utils    = require('../utils')
 var mongoose = require('mongoose')
 var objId    = mongoose.Types.ObjectId
 
+var roles = ['Organiser', 'Teacher', 'Mentor', 'Participant']
+
 
 // Activities page
 exports.index = function(req, res) {
@@ -22,7 +24,7 @@ exports.index = function(req, res) {
 }
 
 // Single activity page
-exports.one = function(req, res) {
+exports.activity = function(req, res) {
   Activity.findOne({'link': req.params.activity}).exec(gotActivity)
 
   function gotActivity(err, one) {
@@ -155,23 +157,66 @@ exports.add_role = function(req, res) {
     })
 
     // Add role to user jobs
-    var query = {'google.name': req.body.name}
+    var query  = {'google.name': req.body.name}
     var update = {$push: {'jobs': role}}
     User.update(query, update).exec()
 
     // Add user to edition
-    var user = req.body.name + ':' + req.body.role
-    var query = {'edition._id': objId.fromString(req.body.edition)}
+    var user   = req.body.name + ':' + req.body.role
+    var query  = {'edition._id': objId.fromString(req.body.edition)}
     var update = {$addToSet: {'edition.$.people': user}}
     Activity.update(query, update).exec(function (err, count) {
       if (req.user)
-        console.log('* ' + req.user.email + ' added ' + req.body.name + ' as ' +
+        console.log('* ' + req.user.google.email + ' added ' + req.body.name + ' as ' +
           req.body.role + ' for edition: ' + req.body.edition)
     })
 
     res.redirect('/activities/' + req.params.activity + '/' + req.params.edition)
   }
 }
+
+
+// Remove role from edition
+exports.remove_role = function(req, res) {
+  _self = {}
+  Activity.findOne({'link': req.params.activity}).exec(gotActivity)
+
+  function gotActivity(err, one) {
+    _self.activity = one
+    // Get deleted user
+    var name = req.query.data.split(':')[0]
+    var query  = {'google.name': name}
+    User.findOne(query).exec(gotUser)
+  }
+
+  function gotUser(err, user) {
+    // If user is found, identify deleted role and remove from user
+    if (user) {
+      var name = req.query.data.split(':')[0]
+      var role = req.query.data.split(':')[1]
+      user.jobs.forEach(function(job) {
+        if (job.role == role && job.activityId.toString() == _self.activity._id.toString()) {
+          // Delete current role
+          var query  = {'google.name': name}
+          var update = {$pull: {'jobs': job}}
+          User.update(query, update).exec()
+        }
+      })
+    }
+
+    // Remove user from edition
+    var query  = {'edition.link': req.params.edition}
+    var update = {$pull: {'edition.$.people': req.query.data}}
+    Activity.update(query, update).exec(function (err, count) {
+      if (req.user)
+        console.log('* ' + req.user.google.email + ' removed ' + req.query.data +
+          ' for edition: ' + req.params.edition)
+    })
+
+    res.redirect('/activities/' + req.params.activity + '/' + req.params.edition)
+  }
+}
+
 
 // List info about one edition
 exports.edition = function(req, res) {
@@ -199,16 +244,19 @@ exports.edition = function(req, res) {
     _self.users = {}
 
     var user_list = []
+
+    // Define user categories
+    roles.forEach(function(role) {
+      _self.users[role] = {}
+    })
+
     // Reformat people list to be easily processed
     ed.people.forEach(function(peep) {
       name = peep.split(':')[0]
       role = peep.split(':')[1]
 
       user_list.push(name)
-
-      _self.users[name] = {}
-      _self.users[name]['role'] = role
-      _self.users[name]['info'] = {}
+      _self.users[role][name] = {}
     })
 
     var query = {'google.name': {$in: user_list}, 'google.email': /@rosedu.org$/}
@@ -217,7 +265,11 @@ exports.edition = function(req, res) {
 
   function gotUsers(err, users) {
     users.forEach(function(user) {
-      _self.users[user.google.name]['info'] = user
+      roles.forEach(function(role) {
+        if (user.google.name in _self.users[role])
+          _self.users[role][user.google.name] = user
+      })
+
     })
 
     var query = {'editionId': _self.edition._id}

@@ -128,10 +128,11 @@ var activities = require('./routes/activities.js')
 app.get('/activities', activities.index)
 app.get('/activities/edit', isMember, activities.edit)
 app.post('/activities/add', isMember, activities.add)
-app.get('/activities/:activity', activities.one)
+app.get('/activities/:activity', activities.activity)
 app.post('/activities/:activity/add_edition', isMember, activities.add_edition)
 app.get('/activities/:activity/:edition', activities.edition)
 app.post('/activities/:activity/:edition/add_role', isMember, activities.add_role)
+app.get('/activities/:activity/:edition/remove_role', isMember, activities.remove_role)
 
 
 // 404 page

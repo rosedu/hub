@@ -9,14 +9,69 @@ block content
 
   .spacer
   h2 People involved
-  - for (var u in users)
-    - if (users[u].info.google)
-      a(href='/people/' + encodeURIComponent(users[u].info.google.email)) #{u}
-      = ' - ' + users[u].role
-      br
-    - else
-      p #{u} - #{users[u].role}
-  .spacer
+  - for (var role in users)
+
+    //- Create list of users with certain role, so we can use it's index
+    - var all = []
+    - each user, name in users[role]
+      - all.push(name)
+
+    //- Print one table for each role
+    - if (all.length != 0)
+      table.table.table-striped
+        tr
+          th= role + 's'
+          th
+
+        //- Use element list index to print in first or second column
+        - for (var i = 0; i < all.length; i+=2)
+          tr
+
+            //- Print first column
+            - if (users[role][all[i]]['google'])
+              td
+                = i + '. '
+                - var email = users[role][all[i]]['google']['email']
+                - var link = '/people/' + encodeURIComponent(email)
+                a(href=link)= all[i]
+                - if (user && user.isMember)
+                  = ' - '
+                  - var data = all[i] + ':' + role
+                  - var link = '/activities/' + activity.link + '/' + myedition.link + '/remove_role?data=' + data
+                  a(href=link, id='delete-table-entry') Delete
+            - else
+              td
+                = i + '. ' + all[i]
+                - if (user && user.isMember)
+                  = ' - '
+                  - var data = all[i] + ':' + role
+                  - var link = '/activities/' + activity.link + '/' + myedition.link + '/remove_role?data=' + data
+                  a(href=link, id='delete-table-entry') Delete
+
+            //- If available print second column
+            - if (i+1 < all.length && users[role][all[i+1]]['google'])
+              td
+                = i+1 + '. '
+                - var email = users[role][all[i+1]]['google']['email']
+                - var link = '/people/' + encodeURIComponent(email)
+                a(href=link)= all[i+1]
+                - if (user && user.isMember)
+                  = ' - '
+                  - var data = all[i+1] + ':' + role
+                  - var link = '/activities/' + activity.link + '/' + myedition.link + '/remove_role?data=' + data
+                  a(href=link, id='delete-table-entry') Delete
+            - else if (i+1 < all.length)
+              td
+                = i+1 + '. ' + all[i+1]
+                - if (user && user.isMember)
+                  = ' - '
+                  - var data = all[i+1] + ':' + role
+                  - var link = '/activities/' + activity.link + '/' + myedition.link + '/remove_role?data=' + data
+                  a(href=link, id='delete-table-entry') Delete
+            - else
+              td
+      .spacer
+
 
   - if (user && user.isMember)
     h2 Add a new role

@@ -75,9 +75,16 @@ block content
     - each ed in activity.edition
       h2
         a(href='/activities/' + activity.link + '/' + ed.link)= ed.name
-      h4 People involved
-      - each peep in ed.people
-        p= peep
+
+      - if (ed.people.length != 0)
+        h4 People involved
+        table.table.table-striped
+          - for (var i = 0; i < ed.people.length; i+=3)
+            tr
+              td= ((ed.people[i]) ? ed.people[i].split(':')[0] : '')
+              td= ((ed.people[i+1]) ? ed.people[i+1].split(':')[0] : '')
+              td= ((ed.people[i+2]) ? ed.people[i+2].split(':')[0] : '')
+
       .spacer
   - else
     h4 No editions yet!

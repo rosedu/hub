@@ -22,8 +22,9 @@ block content
         .spacer
 
       .date.card
-        #day= e.start.getDate()
-        #month= e.startMonth
+        - if (e.start)
+          #day= e.start.getDate()
+          #month= e.startMonth
       - if (user && user.isMember)
         a.actions.raised(href='/events/edit?id=' + e._id) EDIT
 

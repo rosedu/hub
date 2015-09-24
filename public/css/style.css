@@ -257,6 +257,14 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
     100% { opacity:1; }
 }
 
+.table th {
+	font-size: 18px;
+}
+
+#delete-table-entry {
+	font-size: 12px;
+}
+
 /********* USER **********/
 .user-avatar {
 	width: 300px;

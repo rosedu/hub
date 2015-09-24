@@ -20,8 +20,10 @@ exports.index = function (req, res) {
   function gotEvents(err, events) {
     // Iterate in reverse order so we can remove items from list
     for (i = events.length-1; i >= 0; i--) {
-      events[i].startMonth = Macros.months[events[i].start.getMonth()]
-      events[i].startDateFormatted = Utils.getFormattedDateTime(events[i].start)
+      if (events[i].start) {
+        events[i].startMonth = Macros.months[events[i].start.getMonth()]
+        events[i].startDateFormatted = Utils.getFormattedDateTime(events[i].start)
+      }
 
       if (events[i].end) {
         events[i].endMonth = Macros.months[events[i].end.getMonth()]
