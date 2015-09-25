@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  - if (user && user.isMember)
+  - if (user && locals.isMember)
 
     - var query = (activity? '/?id=' + activity.id : '')
     - var form_action = '/activities/add' + query
@@ -13,9 +13,8 @@ block content
       input.form-control(name='logo', type='text', placeholder='Logo URL',
                          value=(activity? activity.logo:false))
       textarea.form-control(name='description', placeholder='Description',
-                            rows='5', cols='50')
-        - if (activity)
-          | #{activity.description}
+                            rows='5', cols='50')= (activity? activity.description : '')
+
       .spacer
       input.btn.btn-success(type='submit', value=(activity? 'Update':'Add'))
     .spacer
@@ -28,7 +27,7 @@ block content
       .activity
         img(src=act.logo)
         .activity-controls
-          - if (user && user.isMember)
+          - if (user && locals.isMember)
             a(href='/activities/edit?link=' + act.link)= 'Edit'
         h2: a(href='/activities/' + act.link)= act.name
         p= act.description

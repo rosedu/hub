@@ -17,21 +17,25 @@ html
     link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css')
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css')
 
+    // Google+ login
+    meta(name="google-signin-clientid", content="749085539075-tihno91bjfqlm8950uocj6b5t1tf1asc.apps.googleusercontent.com")
+    meta(name="google-signin-scope", content="https://www.googleapis.com/auth/plus.profile.emails.read")
+    meta(name="google-signin-requestvisibleactions", content="http://schema.org/AddAction")
+    meta(name="google-signin-cookiepolicy", content="single_host_origin")
+    script(type="text/javascript", src="/public/js/google-login.js")
+    script(src="https://apis.google.com/js/client:platform.js", async, defer)
+
   body
     #header
       #nav
         ul
-          li
-            a(href='http://www.rosedu.org') Home
-          li
-            a(href='/people') People
-          li
-            a(href='/activities') Activities
-          li
-            a(href='/events') Events
+          li: a(href='http://www.rosedu.org') Home
+          li: a(href='/people') People
+          li: a(href='/activities') Activities
+          li: a(href='/events') Events
       #controls
         - if (!user)
-          include ../public/google.html
+          a(href='#', onclick='gapi.auth.signIn({callback: signInCallback})') Login
         - else
           a(href='/logout') Logout
       .spacer
@@ -45,7 +49,7 @@ html
       = 'Copyright © 2007 - 2015 '
       a(href='http://rosedu.org') ROSEdu
 
-    script(src='../public/js/google-login.js')
-    script(src='../public/js/analytics.js')
+    script(src='/public/js/google-login.js')
+    script(src='/public/js/analytics.js')
     script(src='//apis.google.com/js/client:plusone.js')
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js')

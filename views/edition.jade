@@ -34,7 +34,7 @@ block content
                 - var email = users[role][all[i]]['google']['email']
                 - var link = '/people/' + encodeURIComponent(email)
                 a(href=link)= all[i]
-                - if (user && user.isMember)
+                - if (user && locals.isMember)
                   = ' - '
                   - var data = all[i] + ':' + role
                   - var link = '/activities/' + activity.link + '/' + myedition.link + '/remove_role?data=' + data
@@ -42,7 +42,7 @@ block content
             - else
               td
                 = i + '. ' + all[i]
-                - if (user && user.isMember)
+                - if (user && locals.isMember)
                   = ' - '
                   - var data = all[i] + ':' + role
                   - var link = '/activities/' + activity.link + '/' + myedition.link + '/remove_role?data=' + data
@@ -55,7 +55,7 @@ block content
                 - var email = users[role][all[i+1]]['google']['email']
                 - var link = '/people/' + encodeURIComponent(email)
                 a(href=link)= all[i+1]
-                - if (user && user.isMember)
+                - if (user && locals.isMember)
                   = ' - '
                   - var data = all[i+1] + ':' + role
                   - var link = '/activities/' + activity.link + '/' + myedition.link + '/remove_role?data=' + data
@@ -63,7 +63,7 @@ block content
             - else if (i+1 < all.length)
               td
                 = i+1 + '. ' + all[i+1]
-                - if (user && user.isMember)
+                - if (user && locals.isMember)
                   = ' - '
                   - var data = all[i+1] + ':' + role
                   - var link = '/activities/' + activity.link + '/' + myedition.link + '/remove_role?data=' + data
@@ -73,7 +73,7 @@ block content
       .spacer
 
 
-  - if (user && user.isMember)
+  - if (user && locals.isMember)
     h2 Add a new role
     form(method='post', action='/activities/' + activity.link + '/' + myedition.link + '/add_role')
       input(name='edition', type='hidden', value=myedition._id)
@@ -97,11 +97,11 @@ block content
   - else
     h4 No events here!
 
-  - if (user && user.isMember)
+  - if (user && locals.isMember)
       a(href='/events/edit') Add an event.
 
   .spacer
-  - if (user && user.isMember)
+  - if (user && locals.isMember)
     h2 Statistics (for members only)
     p= 'Enrolments: ' + myedition.enrolments
     p= 'Participants: ' + myedition.participants

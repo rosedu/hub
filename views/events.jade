@@ -3,14 +3,14 @@ extends layout
 block content
   - if (user)
     .user.card
-      - if (user.name)
-        a(href='/people/' + encodeURIComponent(user.email))= user.name
+      - if (user.google.name)
+        a(href='/people/' + encodeURIComponent(user.google.email))= user.google.name
       - else
-        a(href='/people/' + encodeURIComponent(user.email)) Profile page
+        a(href='/people/' + encodeURIComponent(user.google.email)) Profile page
       br
-      = user.email
+      = user.google.email
       | <br><br>
-      - if (user.isMember)
+      - if (locals.isMember)
         a(href='/events/edit') Add event
       br
       a(href='/logout') Logout
@@ -25,7 +25,7 @@ block content
         - if (e.start)
           #day= e.start.getDate()
           #month= e.startMonth
-      - if (user && user.isMember)
+      - if (user && locals.isMember)
         a.actions.raised(href='/events/edit?id=' + e._id) EDIT
 
       .card

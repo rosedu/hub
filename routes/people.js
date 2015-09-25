@@ -12,7 +12,7 @@ exports.index = function(req, res) {
   	})
     res.render('people', {
       'people': all,
-      'user'  : req.session.user
+      'user'  : req.user
     })
   }
 }

@@ -18,7 +18,7 @@ exports.index = function(req, res) {
   function gotActivities(err, all) {
     res.render('activities', {
       'activities': all,
-      'user'      : req.session.user
+      'user'      : req.user
     })
   }
 }
@@ -48,7 +48,7 @@ exports.activity = function(req, res) {
     res.render('activity', {
       'activity'  : one,
       'edition'   : edition,
-      'user'      : req.session.user
+      'user'      : req.user
     })
   }
 }
@@ -62,7 +62,7 @@ exports.edit = function(req, res) {
       return res.redirect('/activities')
     res.render('activities', {
       'activity' : theActivity,
-      'user'     : req.session.user
+      'user'     : req.user
     })
   }
 }
@@ -285,7 +285,7 @@ exports.edition = function(req, res) {
       'myedition': _self.edition,
       'events'   : _self.events,
       'users'    : _self.users,
-      'user'     : req.session.user,
+      'user'     : req.user,
       'roles'    : Macros.EVENTS_ROLES
     })
   }

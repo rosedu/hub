@@ -10,79 +10,59 @@ mongoose.connect(configDB.url);
 
 
 // Configuring Passport
-var passport = require('passport');
+var passport = require('passport')
 require('./config/passport')(passport)
-var expressSession = require('express-session');
+var expressSession = require('express-session')
 
 app.use(expressSession({
   cookie: { maxAge: 1800000 }, //30 min
   secret: 'mySecretKey',
   resave: true,
   saveUninitialized: true
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use('/public', express.static(__dirname + '/public'));
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(bodyParser.urlencoded({extended: true}))
+app.use('/public', express.static(__dirname + '/public'))
 
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
+app.set('views', __dirname + '/views')
+app.set('view engine', 'jade')
+// Pretty print html rendered with Jade
+app.locals.pretty = true
 
 
 // if NODE_ENV environment variable is set to 'development' then anyone can
 // access the full features of the site, so doesn't need to be a ROSEdu member
 var email_suffix = (process.env.NODE_ENV === 'development') ? '@gmail.com' : '@rosedu.org'
 
-app.post('/auth/google/callback', passport.authenticate('google'), function(req, res) {
-    // Init session vars
-    profile = req.user.google
-    isMember = (profile.email.indexOf(email_suffix) > -1) ? true:false
 
-    // If user is recognized as member
-    if (req.user.member) isMember = true
+app.use(function (req, res, next) {
+  if (req.user) {
+    res.locals.isMember  = true
+    req.session.isMember = true
+  }
+  if (req.originalUrl != '/auth/google/callback')
+    req.session.back = req.originalUrl
+  next()
+})
 
-    req.session.user = {}
-    req.session.user.id = profile.id
-    req.session.user.name = profile.name
-    req.session.user.email = profile.email
-    req.session.user.token = profile.token
-    req.session.user.isMember = isMember
-
-    // Redirect to index page from ajax
-    res.send('/')
-});
+app.post('/auth/google/callback',
+  passport.authenticate('google'), function(req, res) {
+  // Return user back to client
+  res.send(req.session.back)
+})
 
 app.get('/logout', function(req, res) {
-
-    // Revoke token
-    if (req.session.user) {
-      var https = require('https');
-      https.get({
-          host: 'accounts.google.com',
-          path: '/o/oauth2/revoke?token=' + req.session.user.token
-      }, function(response) {
-          // Continuously update stream with data
-          var body = '';
-          response.on('data', function(d) { body += d; });
-          response.on('end', function() {
-            // We do not expect any response
-            // Passport logout
-            req.session.destroy()
-
-            res.redirect('/')
-          })
-      })
-    } else {
-      res.redirect('/')
-    }
+  req.logout()
+  res.redirect('/')
 })
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
   // if user is authenticated in the session, carry on
-  if (req.isAuthenticated()) return next();
+  if (req.isAuthenticated()) return next()
   // if they aren't redirect them to the home page
-  res.redirect('/');
+  res.redirect('/')
 }
 
 // route middleware to make sure a user is member
@@ -94,15 +74,15 @@ function isMember(req, res, next) {
       'user':   false
     });
 
-    return;
+    return
   }
 
   // if user is member, carry on
-  if (req.session.user.isMember) return next();
+  if (req.session.isMember) return next()
   // if they aren't redirect them to the home page
   res.render('errors', {
       'message': 'Sorry, you are not a Rosedu member :(',
-      'user':   req.user ? req.user.google : false
+      'user'   :   req.user ? req.user.google : false
     })
 }
 

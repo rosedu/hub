@@ -37,12 +37,12 @@ exports.index = function (req, res) {
         events[i].upcoming = true
 
       // Hide private events from nonmembers or non loggedin
-      if ((!req.session.user || !req.session.user.isMember) && events[i].membersOnly)
+      if ((!req.user || !req.session.isMember) && events[i].membersOnly)
         events.splice(i, 1)
     }
 
     res.render('events', {
-      'user':   req.session.user,
+      'user':   req.user,
       'events': events,
       'page':   req.params.page
     })
@@ -71,10 +71,10 @@ exports.add = function (req, res) {
 
   if (req.query.id) {
     Event.update({'_id': req.query.id}, new_event).exec()
-    console.log('* Event ' + new_event.name + ' updated by ' + req.session.user.email)
+    console.log('* Event ' + new_event.name + ' updated by ' + req.user.google.email)
   } else {
     new Event(new_event).save()
-    console.log('* Event ' + new_event.name + ' added by ' + req.session.user.email)
+    console.log('* Event ' + new_event.name + ' added by ' + req.user.google.email)
   }
 
   res.redirect('/events')
@@ -109,7 +109,7 @@ exports.edit = function (req, res) {
 
     res.render('edit', {
       'event'    : theEvent,
-      'user'     : req.session.user,
+      'user'     : req.user,
       'editions' : _self.editions
     })
   }

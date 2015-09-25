@@ -8,7 +8,7 @@ block content
   p= activity.description
 
   .spacer
-  - if (user && user.isMember)
+  - if (user && locals.isMember)
     h2= (edition? 'Edit edition':'Add a new edition')
 
     - var form_action = '/activities/' + activity.link + '/add_edition'
