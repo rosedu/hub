@@ -12,6 +12,8 @@ var activitySchema = mongoose.Schema({
 var editionSchema = mongoose.Schema({
   name         : String,
   link         : String,
+  logo         : String,
+  description  : String,
   people       : [String], // Saved as NAME:ROLE
   start        : Date,
   end          : Date,

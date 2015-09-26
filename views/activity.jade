@@ -4,84 +4,71 @@ block content
   h1= activity.name
 
   .spacer
+  img.act-logo(src=activity.logo)
   h2 Description
   p= activity.description
 
   .spacer
   - if (user && locals.isMember)
-    h2= (edition? 'Edit edition':'Add a new edition')
-
-    - var form_action = '/activities/' + activity.link + '/add_edition'
-    form.raised.form(method='post',
-      action=(edition? form_action + '?link=' + edition.link : form_action))
-
+    - var query = (edition? '/?link=' + edition.link : '')
+    - var form_action = '/activities/' + activity.link + '/add_edition' + query
+    form.raised.form(method='post', action=form_action)
+      h2= (edition? 'Edit edition':'Add a new edition')
+      br
+      input.form-control(name='name', type='text', placeholder='Edition name',
+                         value=(edition? edition.name:false), required)
+      input.form-control(name='logo', type='text', placeholder='Edition logo URL',
+                         value=(edition? edition.logo:false))
       .row
         .form-group.col-lg-6
-          label Edition name
-          br
-          input(
-            name='name', type='text', required
-            value=(edition? edition.name:false))
-      .row
-        .form-group.col-lg-6
-          label Start time
-          br
-          input.datepicker(
-            name='start_date', type='text', required
+          input.datepicker.form-control(
+            name='start_date', type='text', placeholder='Start time', required
             value=(edition? edition.start_format:false))
-      .row
         .form-group.col-lg-6
-          label End time
-          br
-          input.datepicker(
-            name='end_date', type='text', required
+          input.datepicker.form-control(
+            name='end_date', type='text', placeholder='End time', required
             value=(edition? edition.end_format:false))
-      .row
-        .form-group.col-lg-12
-          h3 Statistics (can be filled in later)
-          label Number of people who signed up
-          input(
-            name='enrolments', type='text',
-            value=(edition? edition.enrolments:false))
-          br
-          label Number of people who actually participated
-          input(
-            name='participants', type='text',
-            value=(edition? edition.participants:false))
-          br
-          label Number of prizes offered
-          input(
-            name='prizes', type='text',
-            value=(edition? edition.prizes:false))
-          br
-          label Number of projects contributed at
-          input(
-            name='projects', type='text',
-            value=(edition? edition.projects:false))
-          br
-          label Number of contributions
-          input(
-            name='contributions', type='text',
-            value=(edition? edition.contributions:false))
+
+      textarea.form-control(name='description', placeholder='Description',
+                            rows='5', cols='50')= (edition? edition.description : '')
+
+      br
+      h3 Statistics (can be filled in later)
+      - var label = 'Number of people who signed up'
+      input.form-control(name='enrolments', type='text', placeholder=label,
+                         value=(edition? edition.enrolments:false))
+      - var label = 'Number of people who actually participated'
+      input.form-control(name='participants', type='text', placeholder=label,
+                         value=(edition? edition.participants:false))
+      - var label = 'Number of prizes offered'
+      input.form-control(name='prizes', type='text', placeholder=label,
+                         value=(edition? edition.prizes:false))
+      - var label = 'Number of projects contributed at'
+      input.form-control(name='projects', type='text', placeholder=label,
+                         value=(edition? edition.projects:false))
+      - var label = 'Number of contributions'
+      input.form-control(name='contributions', type='text', placeholder=label,
+                         value=(edition? edition.contributions:false))
 
       script.
         $('.datepicker').datepicker({format: 'dd/mm/yyyy'})
       br
       input.btn.btn-success(type='submit', value=(edition? 'Update' : 'Add'))
+  .spacer
+
 
   .spacer
   h2 All project editions
   - if (activity.edition.length != 0)
     - each ed in activity.edition
-      h2
-        a(href='/activities/' + activity.link + '/' + ed.link)= ed.name
+      h2: a(href='/activities/' + activity.link + '/' + ed.link)= ed.name
 
       - if (ed.people.length != 0)
-        h4 People involved
+        h4 People involved (#{ed.people.length})
         table.table.table-striped
           - for (var i = 0; i < ed.people.length; i+=3)
             tr
-              td= ((ed.people[i]) ? ed.people[i].split(':')[0] : '')
+              td= ((ed.people[i])   ? ed.people[i].split(':')[0] : '')
               td= ((ed.people[i+1]) ? ed.people[i+1].split(':')[0] : '')
               td= ((ed.people[i+2]) ? ed.people[i+2].split(':')[0] : '')
 

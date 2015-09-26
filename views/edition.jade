@@ -7,6 +7,12 @@ block content
   h5= 'Start: ' + myedition.start
   h5= 'End: ' + myedition.end
 
+  -if (myedition.description)
+    .spacer
+    h2 Description
+    p= activity.description
+    p= myedition.description
+
   .spacer
   h2 People involved
   - for (var role in users)

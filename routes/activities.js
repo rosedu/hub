@@ -103,6 +103,8 @@ exports.add_edition = function(req, res) {
   var newEdition = new Edition({
     'name'         : req.body.name,
     'link'         : ed_link,
+    'logo'         : req.body.logo,
+    'description'  : req.body.description,
     'start'        : ed_start_date,
     'end'          : ed_end_date,
 
@@ -122,6 +124,8 @@ exports.add_edition = function(req, res) {
     }, {'$set': {
       'edition.$.name'         : req.body.name,
       'edition.$.link'         : ed_link,
+      'edition.$.logo'         : req.body.logo,
+      'edition.$.description'  : req.body.description,
       'edition.$.start'        : ed_start_date,
       'edition.$.end'          : ed_end_date,
 
