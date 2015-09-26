@@ -31,19 +31,20 @@ exports.user = function(req, res) {
       edition_list.push(job.editionId)
     })
 
-    var query = {'edition._id': {$in: edition_list}}
-    var filter = {'edition': {$elemMatch: {'_id': {$in: edition_list}}}, 'name': 1, 'link': 1}
-    Activity.find(query, filter).exec(gotActivities)
+    var match  = {"$match" : {'edition._id': {$in: edition_list}}}
+    var unwind = {"$unwind" : "$edition"}
+    Activity.aggregate([match, unwind, match], gotActivities)
   }
 
   function gotActivities(err, activities) {
     _self.activities = {}
     // Save activities in dict for easy access
     activities.forEach(function(act) {
-      act.edition.forEach(function(ed) {
-        _self.activities[ed._id] = JSON.parse(JSON.stringify(act))
-        _self.activities[ed._id]['edition'] = JSON.parse(JSON.stringify(ed))
-      })
+      var year = act.edition.start.getFullYear()
+      if (!(year in _self.activities))
+        _self.activities[year] = []
+
+      _self.activities[year].push(act)
     })
 
     res.render('user', {

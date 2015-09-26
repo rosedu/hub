@@ -25,9 +25,15 @@ block content
   .spacer
   .activities
     h2 Activities
-    - each job in cuser.jobs
-      - var activity = activities[job.editionId]
-      p= activity.activityName
-      p= job.role + ' for '
-        a(href='/activities/' + activity.link)= activity.name + ' '
-        a(href='/activities/' + activity.link + '/' + activity.edition.link)= activity.edition.name
+    - each act, year in activities
+      h3= year
+      - each a in act
+        - each peep in a.edition.people
+          - var name = peep.split(':')[0]
+          - var role = peep.split(':')[1]
+          - if (name == cuser.google.name)
+            p <b>#{role}</b>
+              = ' in '
+              a(href='/activities/' + a.link)= a.name
+              = ' edition '
+              a(href='/activities/' + a.link + '/' + a.edition.link)= a.edition.name
