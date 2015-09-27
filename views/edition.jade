@@ -80,16 +80,26 @@ block content
 
 
   - if (user && locals.isMember)
-    h2 Add a new role
-    form(method='post', action='/activities/' + activity.link + '/' + myedition.link + '/add_role')
-      input(name='edition', type='hidden', value=myedition._id)
-      label Name
-      input(name='name', type='text', required)
-      label Role
-      select(name='role')
-        - each role in roles
-          option(value= role)= role
-      input(type='submit', value='Add')
+    - var form_action = '/activities/' + activity.link + '/' + myedition.link + '/add_role'
+    form.raised.form(method='post', action=form_action)
+      .row
+        .form-group.col-lg-6
+          h2 Add a new role
+          input(name='edition', type='hidden', value=myedition._id)
+          textarea.form-control(name='name', placeholder='Names (one per line)',
+                                rows='3', cols='50')
+          select.form-control(name='role')
+            - each role in roles
+              option(value= role)= role
+          input.btn.btn-success(type='submit', value='Add')
+        .form-group.col-lg-6
+          .spacer
+          h4 Instructions
+          p - If a user with the specified name exists in DB, a link to his
+            profile page will be automatically created
+          p - You can paste in names from spreadsheets
+          p - Duplicate names and roles will be removed
+          p - One name can have multiple roles
 
   .spacer
   h2 Events

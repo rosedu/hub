@@ -161,19 +161,26 @@ exports.add_role = function(req, res) {
       'role'       : req.body.role
     })
 
-    // Add role to user jobs
-    var query  = {'google.name': req.body.name}
-    var update = {$push: {'jobs': role}}
-    User.update(query, update).exec()
+    req.body.name = req.body.name.split('\r\n')
+    if (typeof req.body.name == "string")
+      req.body.name = [req.body.name]
 
-    // Add user to edition
-    var user   = req.body.name + ':' + req.body.role
-    var query  = {'edition._id': objId.fromString(req.body.edition)}
-    var update = {$addToSet: {'edition.$.people': user}}
-    Activity.update(query, update).exec(function (err, count) {
-      if (req.user)
-        console.log('* ' + req.user.google.email + ' added ' + req.body.name + ' as ' +
-          req.body.role + ' for edition: ' + req.body.edition)
+    // For each name provided
+    req.body.name.forEach(function(name) {
+      // Add role to user jobs
+      var query  = {'google.name': name}
+      var update = {$push: {'jobs': role}}
+      User.update(query, update).exec()
+
+      // Add user to edition
+      var user   = name + ':' + req.body.role
+      var query  = {'edition._id': objId.fromString(req.body.edition)}
+      var update = {$addToSet: {'edition.$.people': user}}
+      Activity.update(query, update).exec(function (err, count) {
+        if (req.user)
+          console.log('* ' + req.user.google.email + ' added ' + name + ' as ' +
+            req.body.role + ' for edition: ' + req.body.edition)
+      })
     })
 
     res.redirect('/activities/' + req.params.activity + '/' + req.params.edition)
