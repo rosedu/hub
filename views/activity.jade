@@ -8,25 +8,28 @@ block content
   h2 Description
   p= activity.description
 
-  .spacer
   - if (user && locals.isMember)
+    .spacer
     - var query = (edition? '/?link=' + edition.link : '')
     - var form_action = '/activities/' + activity.link + '/add_edition' + query
     form.raised.form(method='post', action=form_action)
       h2= (edition? 'Edit edition':'Add a new edition')
       br
-      input.form-control(name='name', type='text', placeholder='Edition name',
+      input.form-control(name='name', type='text', placeholder='Edition name*',
                          value=(edition? edition.name:false), required)
       input.form-control(name='logo', type='text', placeholder='Edition logo URL',
                          value=(edition? edition.logo:false))
+      input.form-control(name='site', type='text',
+                         placeholder='Edition web page (eg: http://rosedu.org)',
+                         value=(edition? edition.site:false))
       .row
         .form-group.col-lg-6
           input.datepicker.form-control(
-            name='start_date', type='text', placeholder='Start time', required
+            name='start_date', type='text', placeholder='Start time*', required
             value=(edition? edition.start_format:false))
         .form-group.col-lg-6
           input.datepicker.form-control(
-            name='end_date', type='text', placeholder='End time', required
+            name='end_date', type='text', placeholder='End time*', required
             value=(edition? edition.end_format:false))
 
       textarea.form-control(name='description', placeholder='Description',
@@ -58,7 +61,7 @@ block content
 
 
   .spacer
-  h2 All project editions
+  h2 Editions (#{activity.edition.length})
   //- Sort editions
   - var editions = activity.edition.sort(function (a, b) {return (a.name > b.name) ? -1 : (a.name < b.name) ? 1 : 0;})
   - if (activity.edition.length != 0)

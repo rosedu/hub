@@ -7,11 +7,13 @@ block content
   h5= 'Start: ' + myedition.start
   h5= 'End: ' + myedition.end
 
+  .spacer
+  h2 Description
+  p= activity.description
   -if (myedition.description)
-    .spacer
-    h2 Description
-    p= activity.description
     p= myedition.description
+  if (myedition.site)
+    a(href=myedition.site) Visit this edition's page
 
   .spacer
   h2 People involved
@@ -111,7 +113,7 @@ block content
       = 'Location: ' + e.location
       br
   - else
-    h4 No events here!
+    h4 No events here.
 
   - if (user && locals.isMember)
       a(href='/events/edit') Add an event.
@@ -119,10 +121,11 @@ block content
   .spacer
   - if (user && locals.isMember)
     h2 Statistics (for members only)
-    p= 'Enrolments: ' + myedition.enrolments
-    p= 'Participants: ' + myedition.participants
-    p= 'Prizes: ' + myedition.prizes
-    p= 'Projects: ' + myedition.projects
-    p= 'Contributions: ' + myedition.contributions
+
+    p= 'Enrolments: ' + (myedition.enrolments? myedition.enrolments : 'N/A')
+    p= 'Participants: ' + (myedition.participants? myedition.participants : 'N/A')
+    p= 'Prizes: ' + (myedition.prizes? myedition.prizes : 'N/A')
+    p= 'Projects: ' + (myedition.projects? myedition.projects : 'N/A')
+    p= 'Contributions: ' + (myedition.contributions? myedition.contributions : 'N/A')
 
     a(href='/activities/' + activity.link + '?link=' + myedition.link) Edit statistics
