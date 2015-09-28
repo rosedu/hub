@@ -32,7 +32,7 @@ exports.activity = function(req, res) {
 
     edition = null
     if (req.query.link) {
-      //We are in edit edition mode
+      // We are in edit edition mode
       one.edition.forEach(function(ed) {
         if (ed.link == req.query.link)
           edition = ed

@@ -59,6 +59,8 @@ block content
 
   .spacer
   h2 All project editions
+  //- Sort editions
+  - var editions = activity.edition.sort(function (a, b) {return (a.name > b.name) ? -1 : (a.name < b.name) ? 1 : 0;})
   - if (activity.edition.length != 0)
     - each ed in activity.edition
       h2: a(href='/activities/' + activity.link + '/' + ed.link)= ed.name
