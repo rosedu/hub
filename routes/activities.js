@@ -31,8 +31,9 @@ exports.activity = function(req, res) {
     if (!one) return res.redirect('/activities')
 
     edition = null
+    // Check if in edition edit mode
     if (req.query.link) {
-      // We are in edit edition mode
+      // Get current edition
       one.edition.forEach(function(ed) {
         if (ed.link == req.query.link)
           edition = ed
@@ -43,6 +44,18 @@ exports.activity = function(req, res) {
         edition.start_format = Utils.getFormattedDateForEdit(edition.start)
         edition.end_format   = Utils.getFormattedDateForEdit(edition.end)
       }
+
+    } else {
+      // Provide unique participants list
+      one.edition.forEach(function(ed) {
+        var uniq_people = []
+        ed.people.forEach(function(peep) {
+          var name = peep.split(':')[0]
+          if (uniq_people.indexOf(name) < 0)
+            uniq_people.push(name)
+        })
+        ed.people = uniq_people
+      })
     }
 
     res.render('activity', {
