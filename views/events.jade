@@ -17,6 +17,10 @@ block content
 
   - if (events)
     - each e, i in events
+      - if (!events[i-1] && events[i] && events[i].upcoming)
+        h2 Upcoming events
+        br
+
       - if (events[i-1] && events[i-1].upcoming && !events[i].upcoming)
         h2 Past Events
         .spacer
