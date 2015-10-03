@@ -9,8 +9,8 @@ var objId    = mongoose.Types.ObjectId
 
 exports.index = function (req, res) {
   // Paginate events
-  // Ensure that only numbers are used as page numbers.
-  if (req.params.page <= 0 || isNaN(parseFloat(req.params.page))) return res.redirect('/events/1')
+  // Ensure that only positive numbers are used as page numbers.
+  if (req.params.page <= 0) return res.redirect('/events/1')
 
   plimit = Macros.EVENTS_PER_PAGE
   skip = (req.params.page - 1) * plimit
