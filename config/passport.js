@@ -36,7 +36,6 @@ module.exports = function(passport) {
           user.google.name   = profile.displayName
           user.google.email  = profile.email
           user.google.avatar = profile.image.url.split('?')[0]
-          console.log(user)
 
           user.save(function(err) {
             if (err) console.log('Failed to login user: ' + err)

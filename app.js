@@ -37,7 +37,7 @@ var email_suffix = (process.env.NODE_ENV === 'development') ? '@gmail.com' : '@r
 
 
 app.use(function (req, res, next) {
-  if (req.user) {
+  if (req.user && req.user.google.email.indexOf(email_suffix) > -1) {
     res.locals.isMember  = true
     req.session.isMember = true
   }
