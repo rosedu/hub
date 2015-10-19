@@ -1,26 +1,26 @@
 {
-  "name": "rosedu-events",
-  "version": "0.0.1",
+  "name": "rosed-events",
+  "version": "1.0.0",
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js app.js"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.9.3",
-    "connect": "^2.19.6",
-    "cookie-parser": "^1.3.4",
-    "express": "^3.20.1",
-    "express-session": "^1.10.3",
-    "jade": "^0.31.2",
+    "body-parser": "^1.14.1",
+    "connect": "^3.4.0",
+    "cookie-parser": "^1.4.0",
+    "express": "^4.13.3",
+    "express-session": "^1.11.3",
+    "jade": "^1.11.0",
     "markdown": "^0.5.0",
-    "mongoose": "3.2.0",
-    "nodemailer": "^1.3.2",
+    "mongoose": "^4.1.11",
+    "nodemailer": "^1.8.0",
     "nodemon": "^1.7.0",
-    "passport": "0.2.2",
+    "passport": "^0.3.0",
     "passport-google-plus": "^0.5.1"
   },
   "engines": {
-    "node": "0.8.x",
-    "npm": "1.2.x"
+    "node": "4.0.0",
+    "npm": "2.14.2"
   }
 }

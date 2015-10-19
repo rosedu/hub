@@ -122,7 +122,7 @@ app.use(function(req, res, next) {
     'user':   req.user ? req.user.google : false
   });
 });
-app.use(app.router);
+
 
 // Launch server
 app.listen(process.env.PORT || 4000, function() {
