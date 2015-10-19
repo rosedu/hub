@@ -22,4 +22,4 @@ db-import:
 	killall -15 mongod
 
 deploy:
-	ssh events@projects.rosedu.org /home/events/deploy.sh
+	ssh hub@projects.rosedu.org /home/hub/deploy.sh

@@ -1,6 +1,6 @@
-# ROSEdu events
+# ROSEdu Hub
 This app is used to manage our events collaboratively, keep track of passed
-events and get notifications for new ones.
+events and get notifications for new ones and much more.
 
 ## Setup
 To setup you dev environment, just run:
