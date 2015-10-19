@@ -1,5 +1,5 @@
 function signInCallback(authResult) {
-  if (authResult.code && authResult['g-oauth-window'] && authResult.status.method == 'PROMPT') {
+  if (authResult.code) {
     $.post('/auth/google/callback', {code: authResult.code})
     .done(function(data) {
       window.location.replace(data)
@@ -7,4 +7,4 @@ function signInCallback(authResult) {
   } else if (authResult.error) {
     console.log('There was an error: ' + authResult.error);
   }
-}
+};

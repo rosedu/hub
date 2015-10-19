@@ -37,7 +37,9 @@ module.exports = function(passport) {
           user.google.email  = profile.email
           user.google.avatar = profile.image.url.split('?')[0]
 
-          user.save(function(err) { if (err) throw err })
+          user.save(function(err) {
+            if (err) console.log('Failed to login user: ' + err)
+          })
 
         } else {
           user               = new User()
@@ -48,7 +50,7 @@ module.exports = function(passport) {
           user.google.avatar = profile.image.url.split('?')[0]
 
           user.save(function(err) {
-            if (err) throw err
+            if (err) console.log('Failed to register new user')
 
             // Add all the roles which the current user had, to his profile
             Activity.find().exec(function(err, all) {

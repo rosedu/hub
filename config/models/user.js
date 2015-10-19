@@ -2,6 +2,11 @@ var mongoose = require('mongoose')
 var ObjectId = mongoose.Schema.Types.ObjectId
 var Macros   = require('./macros')
 
+var AEdR = mongoose.Schema({
+  activityId  : ObjectId,
+  editionId   : ObjectId,
+  role        : {type: String, enum: Macros.EVENTS_ROLES}
+})
 
 var userSchema = mongoose.Schema({
   jobs    : [AEdR],
@@ -13,12 +18,6 @@ var userSchema = mongoose.Schema({
     name      : String,
     avatar    : String,
   }
-})
-
-var AEdR = mongoose.Schema({
-  activityId  : ObjectId,
-  editionId   : ObjectId,
-  role        : {type: String, enum: Macros.EVENTS_ROLES}
 })
 
 

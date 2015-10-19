@@ -1,4 +1,4 @@
-!!! 5
+doctype html
 html
 
   head
@@ -17,14 +17,6 @@ html
     link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css')
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css')
 
-    // Google+ login
-    meta(name="google-signin-clientid", content="749085539075-tihno91bjfqlm8950uocj6b5t1tf1asc.apps.googleusercontent.com")
-    meta(name="google-signin-scope", content="https://www.googleapis.com/auth/plus.profile.emails.read")
-    meta(name="google-signin-requestvisibleactions", content="http://schema.org/AddAction")
-    meta(name="google-signin-cookiepolicy", content="http://events.rosedu.org")
-    script(type="text/javascript", src="/public/js/google-login.js")
-    script(src="https://apis.google.com/js/client:platform.js", async, defer)
-
   body
     #header
       #nav
@@ -35,7 +27,15 @@ html
           li: a(href='/events') Events
       #controls
         - if (!user)
-          a(href='#', onclick='gapi.auth.signIn({callback: signInCallback})') Login
+          #signinButton
+            span.g-signin(data-scope="https://www.googleapis.com/auth/plus.login",
+                          data-clientid="749085539075-tihno91bjfqlm8950uocj6b5t1tf1asc.apps.googleusercontent.com"
+                          data-redirecturi="postmessage"
+                          data-accesstype="offline"
+                          data-cookiepolicy="single_host_origin"
+                          data-callback="signInCallback")
+          #result
+
         - else
           a(href='/logout') Logout
       .spacer
