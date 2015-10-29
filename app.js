@@ -41,7 +41,7 @@ app.use(function (req, res, next) {
     res.locals.isMember  = true
     req.session.isMember = true
   }
-  if (req.originalUrl != '/auth/google/callback')
+  if (req.originalUrl != '/auth/google/callback' && req.originalUrl != '/favicon.ico')
     req.session.back = req.originalUrl
   next()
 })
