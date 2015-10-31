@@ -49,7 +49,7 @@ app.use(function (req, res, next) {
 app.post('/auth/google/callback',
   passport.authenticate('google'), function(req, res) {
   // Return user back to client
-  res.send(req.session.back)
+  res.send('/profile')
 })
 
 app.get('/logout', function(req, res) {
@@ -100,6 +100,7 @@ app.post('/events/add', isMember, events.add)
 app.get('/events/:page', events.index)
 
 var people = require('./routes/people.js')
+app.get('/profile', isLoggedIn, people.profile)
 app.get('/people', people.index)
 app.get('/people/add', isMember, people.add)
 app.get('/people/:user', people.user)

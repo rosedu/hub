@@ -4,9 +4,9 @@ block content
   - if (user)
     .user.card
       - if (user.google.name)
-        a(href='/people/' + encodeURIComponent(user.google.email))= user.google.name
+        a(href='/profile')= user.google.name
       - else
-        a(href='/people/' + encodeURIComponent(user.google.email)) Profile page
+        a(href='/profile') Profile page
       br
       = user.google.email
       | <br><br>

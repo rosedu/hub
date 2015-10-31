@@ -1,6 +1,12 @@
 var Activity = require('../config/models/activity').activity
 var User     = require('../config/models/user').user
 
+
+exports.profile = function(req, res) {
+  res.redirect('/people/' + encodeURIComponent(req.user.google.email))
+}
+
+
 exports.index = function(req, res) {
   User.find({$or: [{'google.email': /@rosedu.org$/}, {'member': true}]}).exec(gotPeople)
 
