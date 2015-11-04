@@ -1,17 +1,17 @@
 extends layout
 
 block content
-	.people-pannel
-		- each p in people
-			.person(data-name=p.google.name)
-				a(href='/people/' + encodeURIComponent(p.google.email))
-					.avatar-container
-						img(src=p.google.avatar)
-					.name-container
-						h3.name
-							cufon.cufon.cufon-canvas
-								cufontext= p.google.name
+  .people-pannel
+    - each p in people
+      .person(data-name=p.google.name)
+        a(href='/people/' + encodeURIComponent(p.google.email))
+          .avatar-container
+            img(src=p.google.avatar)
+          .name-container
+            h3.name
+              cufon.cufon.cufon-canvas
+                cufontext= p.google.name
 
-		.person
-			a(href='#')
-				.avatar-container Join Us!
+    .spacer
+    #people-join
+      a(href='http://www.rosedu.org/aboutus/') Do you want to join the team?
