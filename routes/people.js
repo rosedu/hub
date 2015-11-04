@@ -1,5 +1,6 @@
 var Activity = require('../config/models/activity').activity
 var User     = require('../config/models/user').user
+var Log      = require('../config/models/logs').logs
 
 
 exports.profile = function(req, res) {
@@ -8,6 +9,7 @@ exports.profile = function(req, res) {
 
 
 exports.index = function(req, res) {
+  _self = {}
   User.find({$or: [{'google.email': /@rosedu.org$/}, {'member': true}]}).exec(gotPeople)
 
   function gotPeople(err, all) {
@@ -16,9 +18,16 @@ exports.index = function(req, res) {
   		// Get user email handle as username
   		son.google.username = son.google.email.split('@')[0]
   	})
+
+    _self.people = all
+    Log.find({}).exec(gotLogs)
+  }
+
+  function gotLogs(err, logs) {
     res.render('people', {
-      'people': all,
-      'user'  : req.user
+      'people': _self.people,
+      'user'  : req.user,
+      'logs'  : logs
     })
   }
 }

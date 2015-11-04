@@ -3,6 +3,8 @@ var bodyParser   = require('body-parser')
 var app = module.exports = express()
 
 
+var Log = require('./config/models/logs').logs
+
 // Connect to database
 var mongoose = require('mongoose')
 var configDB = require('./config/database.js')
@@ -48,6 +50,13 @@ app.use(function (req, res, next) {
 
 app.post('/auth/google/callback',
   passport.authenticate('google'), function(req, res) {
+
+  // Log user's login
+  new Log({
+    'msg'  : req.user.google.email + ' logged in the hub.',
+    'date' : Date.now()
+  }).save()
+
   // Return user back to client
   res.send('/profile')
 })
