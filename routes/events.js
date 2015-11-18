@@ -1,6 +1,7 @@
 var Activity = require('../config/models/activity').activity
 var Event    = require('../config/models/event').event
 var Macros   = require('../config/models/macros')
+var Log      = require('../config/models/logs').logs
 var Utils    = require('../utils')
 var Markdown = require('markdown').markdown
 var mongoose = require('mongoose')
@@ -12,10 +13,11 @@ exports.index = function (req, res) {
   // Ensure that only positive numbers are used as page numbers.
   if (req.params.page <= 0) return res.redirect('/events/1')
 
-  plimit = Macros.EVENTS_PER_PAGE
-  skip = (req.params.page - 1) * plimit
+  var plimit = Macros.EVENTS_PER_PAGE
+  var skip   = (req.params.page - 1) * plimit
+  var query  = (req.query.id ? {'_id': req.query.id} : {})
 
-  Event.find().sort({'start': -1}).skip(skip).limit(plimit).exec(gotEvents)
+  Event.find(query).sort({'start': -1}).skip(skip).limit(plimit).exec(gotEvents)
 
   function gotEvents(err, events) {
     // Iterate in reverse order so we can remove items from list
@@ -42,9 +44,10 @@ exports.index = function (req, res) {
     }
 
     res.render('events', {
-      'user':   req.user,
-      'events': events,
-      'page':   req.params.page
+      'user'   : req.user,
+      'events' : events,
+      'page'   : req.params.page,
+      'id'     : req.query.id
     })
   }
 }

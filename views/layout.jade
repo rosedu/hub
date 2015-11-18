@@ -47,7 +47,9 @@ html
 
     .spacer
     #footer
-      = 'Copyright © 2007 - 2015 '
+      = 'Copyright © 2007 - '
+      script.
+        document.write(new Date().getFullYear() + ' ')
       a(href='http://rosedu.org') ROSEdu
 
     script(src='/public/js/google-login.js')
