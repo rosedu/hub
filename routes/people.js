@@ -1,5 +1,6 @@
 var Activity = require('../config/models/activity').activity
 var User     = require('../config/models/user').user
+var Role     = require('../config/models/user').role
 var Log      = require('../config/models/logs').logs
 
 
