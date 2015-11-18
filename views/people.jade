@@ -10,7 +10,8 @@ block content
           .name-container
             h3.name
               cufon.cufon.cufon-canvas
-                cufontext= p.google.name
+                - var displayName = (p.name ? p.name : p.google.name)
+                cufontext= displayName
 
     .spacer
     #people-join

@@ -9,6 +9,7 @@ var AEdR = mongoose.Schema({
 })
 
 var userSchema = mongoose.Schema({
+  name    : String,
   jobs    : [AEdR],
   member  : Boolean,
   google  : {
