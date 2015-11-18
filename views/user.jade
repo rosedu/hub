@@ -18,9 +18,25 @@ block content
           a.btn.btn-primary(href='/people/add?id=' + cuser._id + '&link=' + encodeURIComponent(cuser.google.email)) Add as member
         - else
           a.btn.btn-primary(href='#', disabled) Already member of ROSEdu
-    .user-info
-      h1= cuser.google.name
-      h4= cuser.google.email
+
+    - var displayName = (cuser.name ? cuser.name : cuser.google.name)
+    - if (action == "edit" && user && user.google.email == cuser.google.email)
+      .user-info-edit
+        form.raised.form(method='post', action='/people/edit')
+          h2 Tell us your name
+          p Please fill in your full name (e.g. George Georgescu) and we will
+            try to find all events you took part in and enhance your profile.
+
+          input.form-control(name='name', type='text', value=displayName)
+          input.form-control(name='id', type='hidden', value=cuser._id)
+          input.btn.btn-success(type='submit', value='Save')
+    - else
+      .user-info
+        h1= displayName
+        - if (user)
+          h4= cuser.google.email
+        - else
+          p Login to view email adresses.
 
   .spacer
   .activities

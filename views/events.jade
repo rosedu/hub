@@ -3,8 +3,9 @@ extends layout
 block content
   - if (user)
     .user.card
+      - var displayName = (user.name ? user.name : user.google.name)
       - if (user.google.name)
-        a(href='/profile')= user.google.name
+        a(href='/profile')= displayName
       - else
         a(href='/profile') Profile page
       br

@@ -53,8 +53,9 @@ app.post('/auth/google/callback',
 
   // Log user's login
   new Log({
-    'msg'  : req.user.google.email + ' logged in the hub.',
-    'date' : Date.now()
+    'msg'    : req.user.google.email + ' logged in the hub.',
+    'date'   : Date.now(),
+    'public' : true
   }).save()
 
   // Return user back to client
@@ -113,6 +114,9 @@ app.get('/profile', isLoggedIn, people.profile)
 app.get('/people', people.index)
 app.get('/people/add', isMember, people.add)
 app.get('/people/:user', people.user)
+app.get('/people/:user/:action', people.user)
+app.post('/people/edit', isLoggedIn, people.edit)
+
 
 var activities = require('./routes/activities.js')
 app.get('/activities', activities.index)

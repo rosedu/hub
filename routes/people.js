@@ -4,7 +4,11 @@ var Log      = require('../config/models/logs').logs
 
 
 exports.profile = function(req, res) {
-  res.redirect('/people/' + encodeURIComponent(req.user.google.email))
+  var redirect_path = '/people/' + encodeURIComponent(req.user.google.email)
+  if (!req.user.name)
+    redirect_path += '/edit'
+
+  res.redirect(redirect_path)
 }
 
 
@@ -20,7 +24,7 @@ exports.index = function(req, res) {
   	})
 
     _self.people = all
-    Log.find({}).exec(gotLogs)
+    Log.find({'public': true}).exec(gotLogs)
   }
 
   function gotLogs(err, logs) {
@@ -65,8 +69,54 @@ exports.user = function(req, res) {
     res.render('user', {
       'cuser'      : _self.user,
       'activities' : _self.activities,
-      'user'       : req.user
+      'user'       : req.user,
+      'action'     : req.params.action
     })
+  }
+}
+
+exports.edit = function(req, res) {
+  if (req.body.id == req.user._id) {
+
+    var query  = {'_id': req.user._id}
+    var roles  = []
+    var update = {
+      $push: {'jobs': roles},
+      $set:  {'name': req.body.name}
+    }
+
+    // Find the roles which the current user had
+    Activity.find().exec(function(err, all) {
+      all.forEach(function(act) {
+        act.edition.forEach(function(ed) {
+          ed.people.forEach(function(peep) {
+            var name = peep.split(':')[0]
+            var role = peep.split(':')[1]
+
+            if (name == req.body.name) {
+              // Save found role
+              roles.push(new Role({
+                'activityId' : act._id,
+                'editionId'  : ed._id,
+                'role'       : role
+              }))
+            }
+          })
+        })
+      })
+    })
+
+    // Update user profile
+    User.update(query, update).exec(function(err, update) {
+      new Log({
+        'msg'  : req.user.google.email + ' changed his name.',
+        'date' : Date.now()
+      }).save()
+      return res.redirect('/profile')
+    })
+
+  } else {
+    return res.redirect('/people')
   }
 }
 

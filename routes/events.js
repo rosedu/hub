@@ -77,7 +77,12 @@ exports.add = function (req, res) {
     console.log('* Event ' + new_event.name + ' added by ' + req.user.google.email)
   }
 
-  res.redirect('/events')
+  new Log({
+    'msg'  : req.user.google.email + ' added a new event.',
+    'date' : Date.now()
+  }).save()
+
+  return res.redirect('/events')
 }
 
 exports.edit = function (req, res) {

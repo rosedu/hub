@@ -307,6 +307,12 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 	margin-left: 30px
 }
 
+.user-info-edit {
+	width: 620px;
+	float: left;
+	margin-left: 30px
+}
+
 /********* PEOPLE **********/
 #people-join {
 	padding-top: 10px;

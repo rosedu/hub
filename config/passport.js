@@ -51,30 +51,6 @@ module.exports = function(passport) {
 
           user.save(function(err) {
             if (err) console.log('Failed to register new user')
-
-            // Add all the roles which the current user had, to his profile
-            Activity.find().exec(function(err, all) {
-              all.forEach(function(act) {
-                act.edition.forEach(function(ed) {
-                  ed.people.forEach(function(peep) {
-                    var name = peep.split(':')[0]
-                    var role = peep.split(':')[1]
-
-                    if (name == profile.displayName) {
-                      var role = new Role({
-                        'activityId' : act._id,
-                        'editionId'  : ed._id,
-                        'role'       : role
-                      })
-
-                      var query = {'google.email': profile.email}
-                      var update = {$push: {'jobs': role}}
-                      User.update(query, update).exec()
-                    }
-                  })
-                })
-              })
-            })
           })
         }
         return done(null, user)
