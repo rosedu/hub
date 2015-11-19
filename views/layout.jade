@@ -20,25 +20,36 @@ html
   body
     #header
       #nav
+        
         ul
-          li: a(href='http://www.rosedu.org') Home
-          li: a(href='/people') People
-          li: a(href='/activities') Activities
-          li: a(href='/events') Events
-      #controls
-        - if (!user)
-          #signinButton
-            span.g-signin(data-scope="email",
-                          data-clientid="749085539075-tihno91bjfqlm8950uocj6b5t1tf1asc.apps.googleusercontent.com"
-                          data-redirecturi="postmessage"
-                          data-accesstype="online"
-                          data-approvalprompt="force"
-                          data-cookiepolicy="single_host_origin"
-                          data-callback="signInCallback")
-          #result
+          | _menu = {
+          li "#[a(href='http://www.rosedu.org') About]",
+          li "#[a(href='/people') People]",
+          li "#[a(href='/activities') Activities]",
+          li "#[a(href='/events') Events]",
+          li "#[a(href='#') Association]",
+          li "#[a(href='#') Partners]",
+          li "#[a(href='#') Contact]",
+          - if (!user)
+            li "#[a(href='#') Login]"
+          - else
+            li "#[a(href='#') Logout]"
+          | }
 
-        - else
-          a(href='/logout') Logout
+      //- #controls
+      //-   - if (!user)
+      //-     #signinButton
+      //-       span.g-signin(data-scope="email",
+      //-                     data-clientid="749085539075-tihno91bjfqlm8950uocj6b5t1tf1asc.apps.googleusercontent.com"
+      //-                     data-redirecturi="postmessage"
+      //-                     data-accesstype="online"
+      //-                     data-approvalprompt="force"
+      //-                     data-cookiepolicy="single_host_origin"
+      //-                     data-callback="signInCallback")
+      //-     #result
+      //- 
+      //-   - else
+      //-     a(href='/logout') Logout
       .spacer
 
     #main

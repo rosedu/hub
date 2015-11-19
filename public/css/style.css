@@ -45,27 +45,36 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 }
 
 #nav {
-	width: 700px;
-	float: left;
+	width: 100%;
+	color: grey;
+	font-size: 19px;
 }
 
 #nav ul {
 	margin: 0px;
 	padding: 10px;
+	text-align: justify;
+}
+
+#nav ul::after {
+	width: 100%;
+	display: inline-block;
+	content: ".";
+	visibility: hidden
 }
 
 #nav li {
-	display: inline;
+	display: inline-block;
 	list-style-type: none;
-	padding-right: 20px;
+	margin: 0px 5px 0px 5px;
 }
 
-#controls {
+/*#controls {
 	width: 290px;
 	float: left;
 	padding: 10px 10px 0px 0px;
 	text-align: right;
-}
+}*/
 
 #footer {
 	width: 1000px;
