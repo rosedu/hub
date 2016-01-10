@@ -172,7 +172,7 @@ exports.add_role = function(req, res) {
   function gotActivity(err, one) {
     var role = new Role({
       'activityId' : one._id,
-      'editionId'  : objId.fromString(req.body.edition),
+      'editionId'  : objId(req.body.edition),
       'role'       : req.body.role
     })
 
@@ -189,7 +189,7 @@ exports.add_role = function(req, res) {
 
       // Add user to edition
       var user   = name + ':' + req.body.role
-      var query  = {'edition._id': objId.fromString(req.body.edition)}
+      var query  = {'edition._id': objId(req.body.edition)}
       var update = {$addToSet: {'edition.$.people': user}}
       Activity.update(query, update).exec(function (err, count) {
         if (req.user)

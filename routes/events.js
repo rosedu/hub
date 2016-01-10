@@ -66,7 +66,7 @@ exports.add = function (req, res) {
     'description': req.body.description,
     'membersOnly': ((req.body.membersonly == 'on') ? true : false),
     'tags':        req.body.tags.split(' '),
-    'editionId':   ((req.body.edition != 'None') ? objId.fromString(req.body.edition) : null)
+    'editionId':   ((req.body.edition != 'None') ? objId(req.body.edition) : null)
   }
 
   // Send announcement to community
