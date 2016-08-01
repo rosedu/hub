@@ -18,8 +18,9 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 }
 
 #header, header a {
+	padding: 30px 0px 0px 0px;
 	width: 1000px;
-	margin: 0px auto 200px auto;
+	margin: 0px auto 0px auto;
 	font-size: 18px;
 	font-weight: bold;
 	color: #323232;
@@ -45,9 +46,14 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 }
 
 #nav {
-	width: 100%;
 	color: grey;
 	font-size: 19px;
+	clear: both;
+	margin-top: 100px;
+}
+
+#nav a {
+	color: grey;
 }
 
 #nav ul {
@@ -67,6 +73,23 @@ iframe[src^="https://apis.google.com/u/0/_/widget/oauthflow/toast"] {
 	display: inline-block;
 	list-style-type: none;
 	margin: 0px 5px 0px 5px;
+}
+
+#logo {
+	width: 400px;
+	float: left;
+}
+
+#social {
+	padding: 25px 15px 0px 0px;
+	float: right;
+}
+
+#social img {
+	width: 44px;
+	height: 44px;
+	margin: 0px 0px 0px 25px;
+	float: left;
 }
 
 /*#controls {

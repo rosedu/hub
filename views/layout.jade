@@ -19,8 +19,22 @@ html
 
   body
     #header
+      #logo
+        img(src='/public/images/logo-header.png')
+      #social
+        a(href='http://www.facebook.com/rosedu.org')
+          img(src='/public/img/fb.png')
+        a(href='http://twitter.com/rosedu_org')
+          img(src='/public/img/tw.png')
+        a(href='http://www.instagram.com/rosedu_org')
+          img(src='/public/img/in.png')
+        a(href='http://www.youtube.com/user/roseduorg')
+          img(src='/public/img/yt.png')
+        a(href='http://www.github.com/rosedu')
+          img(src='/public/img/gh.png')
+        a(href='http://www.rosedu.org/irc')
+          img(src='/public/img/irc.png')
       #nav
-        
         ul
           | _menu = {
           li "#[a(href='http://www.rosedu.org') About]",
@@ -35,7 +49,6 @@ html
           - else
             li "#[a(href='#') Logout]"
           | }
-
       //- #controls
       //-   - if (!user)
       //-     #signinButton
@@ -50,7 +63,6 @@ html
       //- 
       //-   - else
       //-     a(href='/logout') Logout
-      .spacer
 
     #main
       block sidebar

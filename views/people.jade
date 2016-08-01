@@ -2,6 +2,8 @@ extends layout
 
 block content
   .people-pannel
+    h1 Our heroes
+    .spacer
     - each p in people
       .person(data-name=p.google.name)
         a(href='/people/' + encodeURIComponent(p.google.email))

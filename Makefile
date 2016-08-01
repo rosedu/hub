@@ -14,7 +14,7 @@ setup: package.json
 
 run:
 	@mongod&
-	nodemon app.js
+	./node_modules/nodemon/bin/nodemon.js app.js
 
 db-import:
 	mongod &
