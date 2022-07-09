@@ -15,7 +15,7 @@
     "mongoose": "^5.9.18",
     "nodemailer": ">=6.4.16",
     "nodemon": "^1.7.0",
-    "passport": "0.2.2",
+    "passport": "0.6.0",
     "passport-google-plus": "^0.5.1"
   },
   "engines": {
